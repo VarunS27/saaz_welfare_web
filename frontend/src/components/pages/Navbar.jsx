@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Menu, X, Heart } from "lucide-react";
+import abt from './assets/abt2.png'
 
 const navLinks = [
   { name: "Home", target: "home" },
@@ -9,6 +11,10 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+
   const scrollToSection = (targetId) => {
     const element = document.getElementById(targetId);
     if (element) {
@@ -16,42 +22,207 @@ export default function Navbar() {
         behavior: "smooth",
         block: "start",
       });
+      setIsMobileMenuOpen(false); // Close mobile menu after navigation
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+
+      // Update active section based on scroll position
+      const sections = navLinks.map(link => link.target);
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobileMenuOpen && !event.target.closest('.mobile-menu-container')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
-    <div className="w-full flex items-center justify-between pt-0 mt-10 px-8 fixed top-0 left-0 z-50 bg-white">
-      {/* Logo */}
-      <div className="flex-shrink-0 flex items-center">
+    <>
+      <header
+        className={`w-full flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 lg:py-4 fixed top-0 left-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/95 backdrop-blur-lg shadow-lg border-b border-slate-200/50"
+            : "bg-white/90 backdrop-blur-sm"
+        }`}
+      >
+        {/* Logo */}
+ <div className="flex-shrink-0 flex items-center">
         <img
-          src="/logo.jpg"
+          src={abt}
           alt="Logo"
-          className="w-30 h-20 object-cover shadow-md rounded-lg"
+          className="w-full h-20 object-cover"
+          style={{
+            mixBlendMode: "multiply",
+            filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))",
+          }}
         />
       </div>
 
-      {/* Rectangle Navbar */}
-      <nav className="bg-[#F8F8F8] shadow-xl rounded-2xl flex items-center gap-8 px-10 py-4 min-w-[700px] backdrop-blur-sm bg-opacity-95">
-        {navLinks.map((link) => (
-          <button
-            key={link.name}
-            onClick={() => scrollToSection(link.target)}
-            className="font-medium text-base px-5 py-2 rounded-lg transition-all duration-300 text-[#6A0DAD] hover:bg-[#6A0DAD] hover:text-white hover:shadow-lg transform hover:scale-105 cursor-pointer"
-          >
-            {link.name}
-          </button>
-        ))}
-      </nav>
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center space-x-1">
+          {navLinks.map((link) => (
+            <button
+              key={link.name}
+              onClick={() => scrollToSection(link.target)}
+              className={`relative font-medium text-sm xl:text-base px-4 xl:px-5 py-2 rounded-lg transition-all duration-300 cursor-pointer group ${
+                activeSection === link.target
+                  ? "text-[#6A0DAD] bg-[#6A0DAD]/10"
+                  : "text-slate-700 hover:text-[#6A0DAD] hover:bg-[#6A0DAD]/5"
+              }`}
+            >
+              {link.name}
+              <span className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-[#6A0DAD] transition-all duration-300 group-hover:w-full ${
+                activeSection === link.target ? "w-full" : ""
+              }`}></span>
+            </button>
+          ))}
+        </nav>
 
-      {/* Donate Button */}
-      <div className="flex-shrink-0 flex items-center">
+        {/* Desktop Donate Button */}
+        <div className="hidden lg:flex flex-shrink-0 items-center">
+          <button
+            onClick={() => scrollToSection("donate")}
+            className="bg-[#228B22] text-white font-semibold text-sm xl:text-base px-6 xl:px-8 py-2.5 xl:py-3 rounded-xl shadow-lg hover:bg-[#1e7a1e] hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center group"
+          >
+            <Heart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+            Donate
+          </button>
+        </div>
+
+        {/* Mobile Menu Button */}
         <button
-          onClick={() => scrollToSection("donate")}
-          className="bg-[#228B22] text-white font-semibold text-base px-8 py-3 rounded-xl shadow-lg hover:bg-[#1e7a1e] hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="lg:hidden p-2 rounded-lg text-slate-700 hover:text-[#6A0DAD] hover:bg-slate-100 transition-all duration-300 mobile-menu-container"
+          aria-label="Toggle mobile menu"
         >
-          Donate
+          {isMobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* Mobile Menu */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden transform transition-transform duration-300 ease-in-out mobile-menu-container ${
+          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Mobile Menu Header */}
+          <div className="flex items-center justify-between p-6 border-b border-slate-200">
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-[#6A0DAD] rounded-lg flex items-center justify-center shadow-md">
+                <Heart className="w-5 h-5 text-white" />
+              </div>
+              <div className="ml-3">
+                <h2 className="text-lg font-bold text-[#6A0DAD]">Saaz Welfare</h2>
+                <p className="text-sm text-[#228B22] font-medium">Foundation</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors duration-200"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Mobile Navigation Links */}
+          <nav className="flex-1 px-6 py-8">
+            <ul className="space-y-2">
+              {navLinks.map((link, index) => (
+                <li key={link.name}>
+                  <button
+                    onClick={() => scrollToSection(link.target)}
+                    className={`w-full text-left px-4 py-4 rounded-xl font-medium text-base transition-all duration-300 flex items-center group ${
+                      activeSection === link.target
+                        ? "bg-[#6A0DAD] text-white shadow-lg"
+                        : "text-slate-700 hover:bg-slate-100 hover:text-[#6A0DAD]"
+                    }`}
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <span className={`w-2 h-2 rounded-full mr-3 transition-all duration-300 ${
+                      activeSection === link.target 
+                        ? "bg-white" 
+                        : "bg-slate-300 group-hover:bg-[#6A0DAD]"
+                    }`}></span>
+                    {link.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Mobile Donate Button */}
+          <div className="p-6 border-t border-slate-200">
+            <button
+              onClick={() => scrollToSection("donate")}
+              className="w-full bg-[#228B22] text-white font-semibold text-base py-4 rounded-xl shadow-lg hover:bg-[#1e7a1e] transition-all duration-300 flex items-center justify-center group"
+            >
+              <Heart className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
+              Make a Donation
+            </button>
+            
+            {/* Contact Info */}
+            <div className="mt-4 text-center">
+              <p className="text-sm text-slate-500">
+                Questions? Call us at
+              </p>
+              <p className="text-sm font-semibold text-[#6A0DAD]">
+                +91 XXX XXX XXXX
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
