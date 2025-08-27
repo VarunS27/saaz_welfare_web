@@ -89,10 +89,7 @@ export default function Navbar() {
           src={abt}
           alt="Logo"
           className="w-full h-20 object-cover"
-          style={{
-            mixBlendMode: "multiply",
-            filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1))",
-          }}
+      
         />
       </div>
 
