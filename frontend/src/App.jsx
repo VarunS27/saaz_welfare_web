@@ -9,6 +9,7 @@ import NotFound from './components/NotFound';
 import grp from './components/pages/assets/grp.jpg';
 import { Heart } from 'lucide-react';
 import Gallery from './components/pages/Gallery';
+import ContactUs from './components/pages/ContactUs';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
               <AboutUs />
               <Events />
               <Gallery />
+              <ContactUs />
 
               {/* Placeholder sections */}
 
