@@ -79,27 +79,9 @@ function App() {
 
               {/* Placeholder sections */}
 
-              <section id="contact" className="min-h-screen py-20 px-8 relative">
-                <div className="max-w-7xl mx-auto text-center">
-                  <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-white/50 shadow-xl">
-                    <h2 className="text-4xl font-bold text-[#6A0DAD] mb-8">Contact Us</h2>
-                    <p className="text-gray-700 text-xl max-w-4xl mx-auto">
-                      Get in touch with us to learn more about our mission...
-                    </p>
-                  </div>
-                </div>
-              </section>
+              
 
-              <section id="donate" className="min-h-screen py-20 px-8 relative">
-                <div className="max-w-7xl mx-auto text-center">
-                  <div className="bg-white/80 backdrop-blur-sm p-12 rounded-3xl border border-white/50 shadow-xl">
-                    <h2 className="text-4xl font-bold text-[#228B22] mb-8">Support Our Cause</h2>
-                    <p className="text-gray-700 text-xl max-w-4xl mx-auto">
-                      Your donation helps us continue our welfare activities...
-                    </p>
-                  </div>
-                </div>
-              </section>
+              
             </div>
           } />
           
