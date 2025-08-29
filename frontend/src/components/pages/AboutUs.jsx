@@ -100,7 +100,7 @@ const AboutUs = () => {
   return (
     <section id="about" className="min-h-screen py-20 px-8 relative overflow-hidden">
       {/* Background - Same as Gallery */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-"></div>
       
       {/* Decorative elements */}
       <div className="absolute top-20 right-10 w-32 h-32 bg-[#6A0DAD] opacity-5 rounded-full blur-3xl"></div>

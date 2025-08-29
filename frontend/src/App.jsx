@@ -10,6 +10,7 @@ import grp from './components/pages/assets/grp.jpg';
 import { Heart } from 'lucide-react';
 import Gallery from './components/pages/Gallery';
 import ContactUs from './components/pages/ContactUs';
+import Footer from './components/pages/Footer';
 
 function App() {
   return (
@@ -76,7 +77,7 @@ function App() {
               <Events />
               <Gallery />
               <ContactUs />
-
+              <Footer />
               {/* Placeholder sections */}
 
               

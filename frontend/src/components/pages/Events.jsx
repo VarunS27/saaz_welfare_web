@@ -209,7 +209,7 @@ const Events = () => {
             Our <span className="text-white bg-[#c98d32] p-1 rounded">Events</span> & Activities
           </h2>
           <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto mb-4 sm:mb-6"></div>
-          <p className="text-base sm:text-lg lg:text-xl text-white max-w-3xl mx-auto px-4">
+          <p className="text-base sm:text-lg lg:text-xl text-black max-w-3xl mx-auto px-4">
             Join us in our community initiatives and be part of the positive change we're creating together.
           </p>
         </div>
