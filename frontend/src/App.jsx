@@ -14,7 +14,7 @@ import NotFound from './components/NotFound';
 
 // Auth Components
 import { AuthProvider } from './components/context/AuthContext';
-import Login from './components/Auth/Login';
+import Login from './components/auth/Login';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Dashboard from './components/Dashboard/Dashboard';
 
