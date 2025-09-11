@@ -48,7 +48,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      console.log('🔐 Attempting login with:', { email, password: '***' });
+      
       const response = await api.post('/auth/login', { email, password });
+      
+      console.log('✅ Login response:', response.data);
       
       if (response.data.status === 'success') {
         const { token, user } = response.data.data;
@@ -66,7 +70,8 @@ export const AuthProvider = ({ children }) => {
         return { success: true, data: response.data };
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('❌ Login error:', error);
+      console.error('❌ Error response:', error.response?.data);
       return { 
         success: false, 
         message: error.response?.data?.message || 'Login failed' 

@@ -197,19 +197,14 @@ const Events = () => {
       {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-10 sm:top-20 right-5 sm:right-10 w-20 sm:w-32 h-20 sm:h-32 bg-[#6A0DAD] opacity-5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 sm:bottom-20 left-5 sm:left-10 w-24 sm:w-40 h-24 sm:h-40 bg-[#228B22] opacity-5 rounded-full blur-3xl"></div>
-
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4 px-2">
-            Our <span className="text-white bg-[#c98d32] p-1 rounded">Events</span> & Activities
+            Our <span className="text-[#c98d32] p-1 rounded">Events</span> & Activities
           </h2>
-          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto mb-4 sm:mb-6"></div>
-          <p className="text-base sm:text-lg lg:text-xl text-black max-w-3xl mx-auto px-4">
+           <p className="text-base sm:text-lg lg:text-xl text-black max-w-3xl mx-auto px-4">
             Join us in our community initiatives and be part of the positive change we're creating together.
           </p>
         </div>
@@ -220,7 +215,6 @@ const Events = () => {
           {/* Navigation Controls */}
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 sm:mb-8 gap-4">
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-              <h3 className="text-xl sm:text-2xl font-bold text-slate-800">Current Events</h3>
               <div className="flex gap-2">
                 {Array.from({ length: totalSets }, (_, index) => (
                   <button
@@ -343,25 +337,6 @@ const Events = () => {
                 )}
               </div>
             ))}
-          </div>
-
-          {/* Auto-slide Progress Bar */}
-          <div className="mt-6 sm:mt-8 flex justify-center">
-            <div className="relative">
-              <div className="w-48 sm:w-64 h-1 bg-slate-200 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-gradient-to-r from-[#6A0DAD] to-[#228B22] rounded-full transition-all duration-1000"
-                  style={{ 
-                    width: `${((currentEventSet + 1) / totalSets) * 100}%`
-                  }}
-                ></div>
-              </div>
-              <div className="absolute -top-6 left-0 right-0 flex justify-center">
-                <span className="text-xs text-slate-500 bg-white px-2 py-1 rounded-full shadow-sm">
-                  {currentEventSet + 1} of {totalSets}
-                </span>
-              </div>
-            </div>
           </div>
 
           {/* Mobile Helper Text */}

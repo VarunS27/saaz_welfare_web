@@ -138,10 +138,10 @@ const Home = () => {
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight">
                       Welcome to{' '}
                       <span className="relative inline-block">
-                        <span className="text-[#6A0DAD]">Saaz Welfare</span>
+                        <span className="text-green-800">Saaz Welfare</span>
                         {/* <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 bg-[#228B22] rounded-full"></div> */}
                       </span>{' '}
-                      <span className="text-white bg-blue-800  px-2 py-1 rounded-lg inline-block mt-2 sm:mt-0"
+                      <span className="text-[#c98d32]  px-2 py-1 rounded-lg inline-block mt-2 sm:mt-0"
                       style={{ animation: 'fade-in 2s infinite' }}
                       >Foundation</span>
                     </h1>
@@ -246,12 +246,12 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Stats Header */}
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-4">
-              Our <span className="text-[#6A0DAD]">Impact</span> in Numbers
-            </h2>
-            <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto"></div>
-          </div>
+<div className="text-center mb-8 sm:mb-12">
+  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-4">
+    Our <span className="text-[#c6651a] " style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>Impact</span> in Numbers
+  </h2>
+  <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto"></div>
+</div>
 
           {/* Stats Grid */}
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/50 shadow-xl">
@@ -266,8 +266,8 @@ const Home = () => {
                     animationDelay: `${index * 200}ms`
                   }}
                 >
-                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 group-hover:from-[#6A0DAD] group-hover:to-[#5a0b96] group-hover:text-white transition-all duration-300 shadow-lg">
-                    <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-[#6A0DAD] group-hover:text-white transition-colors duration-300" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 group-hover:from-[#dd6f14] group-hover:to-[#d67403] group-hover:text-white transition-all duration-300 shadow-lg">
+                    <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-[#c6651a] group-hover:text-white transition-colors duration-300" />
                   </div>
                   <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-1 sm:mb-2 font-mono">
                     {formatNumber(animatedStats[index] || 0)}{stat.suffix}
@@ -278,7 +278,7 @@ const Home = () => {
                   {isMobile && isStatsVisible && (
                     <div className="mt-3 w-full bg-slate-200 rounded-full h-1 overflow-hidden">
                       <div 
-                        className="h-full bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full transition-all duration-1000"
+                        className="h-full bg-gradient-to-r from-[#228B22] to-[#c6651a] rounded-full transition-all duration-1000"
                         style={{ width: `${(animatedStats[index] / stat.number) * 100}%` }}
                       ></div>
                     </div>

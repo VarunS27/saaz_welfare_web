@@ -1,438 +1,213 @@
-import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Calendar, MapPin, Users, Heart, Filter, Grid, List } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Camera, Heart, Users, Eye } from 'lucide-react';
 
 const Gallery = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [viewMode, setViewMode] = useState('grid'); // grid or list
-  const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [imageRotation, setImageRotation] = useState(0);
+  const galleryRef = useRef(null);
 
-  // NGO Gallery Data
-  const galleryData = [
-    {
-      id: 1,
-      src: '/gallery/health-camp1.jpg',
-      title: 'Free Health Checkup Camp',
-      category: 'healthcare',
-      date: '2024-12-15',
-      location: 'Mumbai Community Center',
-      participants: 150,
-      description: 'Organized a comprehensive health camp providing free medical consultations, basic health screenings, and medicine distribution for underprivileged community members.',
-    },
-    {
-      id: 2,
-      src: '/gallery/education1.jpg',
-      title: 'Children Education Program',
-      category: 'education',
-      date: '2024-12-10',
-      location: 'Government Primary School',
-      participants: 80,
-      description: 'Interactive learning sessions focusing on basic literacy, numeracy, and computer skills for children from low-income families.',
-    },
-    {
-      id: 3,
-      src: '/gallery/food-drive1.jpg',
-      title: 'Monthly Food Distribution',
-      category: 'community',
-      date: '2024-12-08',
-      location: 'Community Center',
-      participants: 200,
-      description: 'Regular food distribution program providing nutritious meals and grocery packages to families facing food insecurity.',
-    },
-    {
-      id: 4,
-      src: '/gallery/elder-care1.jpg',
-      title: 'Senior Citizens Support',
-      category: 'eldercare',
-      date: '2024-12-05',
-      location: 'Senior Care Home',
-      participants: 60,
-      description: 'Weekly visits providing companionship, health checkups, and recreational activities for elderly residents.',
-    },
-    {
-      id: 5,
-      src: '/gallery/environment1.jpg',
-      title: 'Community Clean Drive',
-      category: 'environment',
-      date: '2024-12-01',
-      location: 'Local Park & Beach',
-      participants: 100,
-      description: 'Environmental conservation initiative involving community members in cleaning public spaces and planting trees.',
-    },
-    {
-      id: 6,
-      src: '/gallery/skills1.jpg',
-      title: 'Vocational Training Program',
-      category: 'skills',
-      date: '2024-11-28',
-      location: 'Training Center',
-      participants: 40,
-      description: 'Skills development workshops in tailoring, computer basics, and entrepreneurship for unemployed youth.',
-    },
-    {
-      id: 7,
-      src: '/gallery/women1.jpg',
-      title: 'Women Empowerment Workshop',
-      category: 'empowerment',
-      date: '2024-11-20',
-      location: 'Community Hall',
-      participants: 75,
-      description: 'Educational workshop on women rights, financial literacy, and self-defense training.',
-    },
-    {
-      id: 8,
-      src: '/gallery/medical1.jpg',
-      title: 'Medical Equipment Donation',
-      category: 'healthcare',
-      date: '2024-11-15',
-      location: 'District Hospital',
-      participants: 30,
-      description: 'Donated essential medical equipment including wheelchairs, oxygen concentrators, and diagnostic tools.',
-    }
-  ];
-
-  const categories = [
-    { key: 'all', label: 'All Programs', icon: '🌟' },
-    { key: 'healthcare', label: 'Healthcare', icon: '🏥' },
-    { key: 'education', label: 'Education', icon: '📚' },
-    { key: 'community', label: 'Community Service', icon: '🤝' },
-    { key: 'eldercare', label: 'Elder Care', icon: '👵' },
-    { key: 'environment', label: 'Environment', icon: '🌱' },
-    { key: 'skills', label: 'Skills Training', icon: '🎯' },
-    { key: 'empowerment', label: 'Empowerment', icon: '💪' }
-  ];
-
+  // Intersection Observer for animations
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    if (galleryRef.current) {
+      observer.observe(galleryRef.current);
+    }
+
+    return () => {
+      if (galleryRef.current) {
+        observer.unobserve(galleryRef.current);
+      }
+    };
   }, []);
 
-  const filteredImages = selectedCategory === 'all' 
-    ? galleryData 
-    : galleryData.filter(img => img.category === selectedCategory);
+  // Auto-rotate images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageRotation(prev => (prev + 1) % galleryImages.length);
+    }, 3000); // Change image every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
 
-  const openModal = (image) => {
-    setSelectedImage(image);
+  // Extended gallery images data
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1596815064285-45ed8a9c0463?w=400&h=400&fit=crop&crop=face",
+    "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=400&h=400&fit=crop&crop=face"
+  ];
+
+  // Optimized positions to prevent overlapping - more spread out
+  const imagePositions = [
+    // Left side - top row
+    { top: '8%', left: '5%', size: 'w-24 h-28', rotation: 'rotate-12', zIndex: 10 },
+    { top: '5%', left: '20%', size: 'w-28 h-24', rotation: '-rotate-6', zIndex: 8 },
+    { top: '12%', left: '35%', size: 'w-20 h-32', rotation: 'rotate-3', zIndex: 9 },
+    
+    // Left side - middle row
+    { top: '35%', left: '3%', size: 'w-32 h-20', rotation: '-rotate-8', zIndex: 7 },
+    { top: '40%', left: '18%', size: 'w-24 h-28', rotation: 'rotate-10', zIndex: 11 },
+    { top: '32%', left: '32%', size: 'w-28 h-24', rotation: '-rotate-4', zIndex: 6 },
+    
+    // Left side - bottom row
+    { bottom: '25%', left: '8%', size: 'w-20 h-24', rotation: 'rotate-6', zIndex: 12 },
+    { bottom: '28%', left: '22%', size: 'w-24 h-32', rotation: '-rotate-9', zIndex: 5 },
+    { bottom: '15%', left: '35%', size: 'w-28 h-20', rotation: 'rotate-7', zIndex: 13 },
+    
+    // Right side - top row
+    { top: '10%', right: '8%', size: 'w-24 h-28', rotation: '-rotate-10', zIndex: 14 },
+    { top: '6%', right: '22%', size: 'w-32 h-24', rotation: 'rotate-5', zIndex: 4 },
+    { top: '18%', right: '35%', size: 'w-20 h-28', rotation: '-rotate-7', zIndex: 15 },
+    
+    // Right side - middle row
+    { top: '38%', right: '5%', size: 'w-28 h-32', rotation: 'rotate-8', zIndex: 3 },
+    { top: '42%', right: '20%', size: 'w-24 h-20', rotation: '-rotate-12', zIndex: 16 },
+    { top: '35%', right: '33%', size: 'w-20 h-24', rotation: 'rotate-4', zIndex: 2 },
+    
+    // Right side - bottom row
+    { bottom: '20%', right: '10%', size: 'w-32 h-28', rotation: '-rotate-5', zIndex: 17 },
+    { bottom: '25%', right: '25%', size: 'w-24 h-24', rotation: 'rotate-11', zIndex: 1 },
+    { bottom: '12%', right: '38%', size: 'w-28 h-20', rotation: '-rotate-3', zIndex: 18 }
+  ];
+
+  // Get current set of images to display
+  const getCurrentImages = () => {
+    const images = [];
+    for (let i = 0; i < imagePositions.length; i++) {
+      const imageIndex = (imageRotation + i) % galleryImages.length;
+      images.push(galleryImages[imageIndex]);
+    }
+    return images;
   };
-
-  const closeModal = () => {
-    setSelectedImage(null);
-  };
-
-  const nextImage = () => {
-    const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
-    const nextIndex = (currentIndex + 1) % filteredImages.length;
-    setSelectedImage(filteredImages[nextIndex]);
-  };
-
-  const prevImage = () => {
-    const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
-    const prevIndex = (currentIndex - 1 + filteredImages.length) % filteredImages.length;
-    setSelectedImage(filteredImages[prevIndex]);
-  };
-
-  if (isLoading) {
-    return (
-      <section className="min-h-screen py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Background - Same as Events */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-10 sm:top-20 right-5 sm:right-10 w-20 sm:w-32 h-20 sm:h-32 bg-[#6A0DAD] opacity-5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 sm:bottom-20 left-5 sm:left-10 w-24 sm:w-40 h-24 sm:h-40 bg-[#228B22] opacity-5 rounded-full blur-3xl"></div>
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#6A0DAD]"></div>
-            <p className="mt-4 text-slate-600">Loading our impact stories...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
-    <section id="gallery" className="min-h-screen py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background - Same as Events */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
-      
-      {/* Decorative elements */}
-      <div className="absolute top-10 sm:top-20 right-5 sm:right-10 w-20 sm:w-32 h-20 sm:h-32 bg-[#6A0DAD] opacity-5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 sm:bottom-20 left-5 sm:left-10 w-24 sm:w-40 h-24 sm:h-40 bg-[#228B22] opacity-5 rounded-full blur-3xl"></div>
+    <section id="gallery" className="min-h-screen py-16 lg:py-24 relative overflow-hidden">
+      {/* Clean background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-gray-50 opacity-70"></div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
+      <div ref={galleryRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#6A0DAD]/10 rounded-full mb-6">
-            <Heart className="w-4 h-4 text-[#6A0DAD] mr-2" />
-            <span className="text-sm font-semibold text-[#6A0DAD]">Our Impact</span>
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/90 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm mb-8">
+            <Camera className="w-5 h-5 text-[#c98d32]" />
+            <span className="text-sm font-medium text-gray-700">Gallery</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-800 mb-4">
-            Stories of <span className="text-[#6A0DAD]">Hope</span> & <span className="text-[#228B22]">Change</span>
+          
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8">
+            <span className="bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 bg-clip-text text-transparent">
+              Our Impact
+            </span>
+            <br />
+            <span className="text-gray-800 text-4xl sm:text-5xl lg:text-6xl">in Pictures</span>
           </h2>
-          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto mb-4 sm:mb-6"></div>
-          <p className="text-base sm:text-lg lg:text-xl text-slate-600 max-w-3xl mx-auto px-4">
-            Every photograph captures a moment of positive impact in our community. See how together we're making a difference.
+          
+          <p className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+            Discover the faces and moments that define our mission. Every image tells a story of 
+            <span className="font-semibold text-[#c98d32]"> hope</span>, 
+            <span className="font-semibold text-purple-600"> change</span>, and 
+            <span className="font-semibold text-green-600"> community</span>.
           </p>
         </div>
 
-        {/* Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8 p-4 bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-lg">
-          
-          {/* Category Filters */}
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.key}
-                onClick={() => setSelectedCategory(category.key)}
-                className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
-                  selectedCategory === category.key
-                    ? 'bg-gradient-to-r from-[#6A0DAD] to-[#228B22] text-white shadow-lg'
-                    : 'bg-white/70 text-slate-600 hover:bg-slate-100 border border-slate-200'
-                }`}
-              >
-                <span className="mr-1">{category.icon}</span>
-                {category.label}
-              </button>
-            ))}
-          </div>
-
-          {/* View Toggle */}
-          <div className="flex bg-slate-100 rounded-lg p-1">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-md transition-all duration-200 ${
-                viewMode === 'grid' ? 'bg-white text-[#6A0DAD] shadow-sm' : 'text-slate-500'
-              }`}
-            >
-              <Grid className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-md transition-all duration-200 ${
-                viewMode === 'list' ? 'bg-white text-[#6A0DAD] shadow-sm' : 'text-slate-500'
-              }`}
-            >
-              <List className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Gallery Grid View */}
-        {viewMode === 'grid' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredImages.map((image, index) => (
+        {/* Floating Images Gallery */}
+        <div className="relative h-[800px] lg:h-[900px]">
+          {getCurrentImages().map((imageSrc, index) => {
+            const position = imagePositions[index];
+            if (!position) return null;
+            
+            return (
               <div
-                key={image.id}
-                className="bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer group border border-white/50 transform hover:-translate-y-2"
-                onClick={() => openModal(image)}
+                key={`${imageRotation}-${index}`}
+                className={`absolute ${position.size} ${position.rotation} transition-all duration-1000 ease-out ${
+                  isVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-12'
+                }`}
                 style={{
-                  animationDelay: `${index * 100}ms`
+                  ...position,
+                  zIndex: position.zIndex,
+                  animationDelay: `${index * 150}ms`
                 }}
               >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={image.src}
-                    alt={image.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    onError={(e) => {
-                      e.target.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23F8F8F8'/%3E%3Ccircle cx='200' cy='120' r='40' fill='%236A0DAD' opacity='0.3'/%3E%3Crect x='160' y='180' width='80' height='60' fill='%23228B22' opacity='0.3' rx='10'/%3E%3Ctext x='200' y='270' text-anchor='middle' fill='%236A0DAD' font-size='14' font-weight='bold'%3E${image.title}%3C/text%3E%3Ctext x='200' y='290' text-anchor='middle' fill='%23666' font-size='12'%3E${categories.find(c => c.key === image.category)?.label}%3C/text%3E%3C/svg%3E`;
-                    }}
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-semibold rounded-full border border-white/50">
-                      {categories.find(c => c.key === image.category)?.icon} {categories.find(c => c.key === image.category)?.label}
-                    </span>
-                  </div>
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <h3 className="font-bold text-lg mb-2 line-clamp-2">{image.title}</h3>
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(image.date).toLocaleDateString()}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="w-3 h-3" />
-                          {image.participants}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-slate-800 mb-2 line-clamp-2">{image.title}</h3>
-                  <div className="flex items-center gap-4 text-sm text-slate-500 mb-2">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3" />
-                      {new Date(image.date).toLocaleDateString()}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="w-3 h-3" />
-                      {image.participants}
-                    </span>
-                  </div>
-                  <p className="text-sm text-slate-600 line-clamp-2">{image.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Gallery List View */}
-        {viewMode === 'list' && (
-          <div className="space-y-4">
-            {filteredImages.map((image) => (
-              <div
-                key={image.id}
-                className="bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-white/50 hover:scale-105"
-                onClick={() => openModal(image)}
-              >
-                <div className="flex flex-col md:flex-row">
-                  <div className="w-full md:w-64 h-48 md:h-auto">
+                <div className="relative w-full h-full group cursor-pointer">
+                  <div className="w-full h-full rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-500 p-2">
                     <img
-                      src={image.src}
-                      alt={image.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23F8F8F8'/%3E%3Ccircle cx='150' cy='80' r='30' fill='%236A0DAD' opacity='0.3'/%3E%3Crect x='120' y='120' width='60' height='40' fill='%23228B22' opacity='0.3' rx='5'/%3E%3Ctext x='150' y='180' text-anchor='middle' fill='%236A0DAD' font-size='12' font-weight='bold'%3E${image.title}%3C/text%3E%3C/svg%3E`;
-                      }}
+                      src={imageSrc}
+                      alt={`Gallery image ${index + 1}`}
+                      className="w-full h-full object-cover rounded-2xl"
+                      loading="lazy"
                     />
                   </div>
-                  <div className="flex-1 p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <span className="px-3 py-1 bg-[#6A0DAD]/10 text-[#6A0DAD] text-xs font-semibold rounded-full">
-                        {categories.find(c => c.key === image.category)?.icon} {categories.find(c => c.key === image.category)?.label}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-800 mb-2">{image.title}</h3>
-                    <p className="text-slate-600 mb-4">{image.description}</p>
-                    <div className="flex items-center gap-6 text-sm text-slate-500">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {new Date(image.date).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {image.location}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        {image.participants} participants
-                      </span>
-                    </div>
-                  </div>
+                  
+                  {/* Hover overlay */}
+                  
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-
-        {/* Results Info */}
-        <div className="text-center mt-8">
-          <p className="text-slate-600">
-            Showing <span className="font-semibold text-[#6A0DAD]">{filteredImages.length}</span> {filteredImages.length === 1 ? 'story' : 'stories'}
-            {selectedCategory !== 'all' && (
-              <span> from <span className="font-semibold text-[#228B22]">{categories.find(c => c.key === selectedCategory)?.label}</span></span>
-            )}
-          </p>
-        </div>
-      </div>
-
-      {/* Modal */}
-      {selectedImage && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-5xl w-full max-h-[90vh] bg-white rounded-2xl overflow-hidden">
-            
-            {/* Close Button */}
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur-sm text-slate-800 p-2 rounded-full hover:bg-white transition-all duration-300 shadow-lg"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
-            {/* Navigation Buttons */}
-            {filteredImages.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm text-slate-800 p-3 rounded-full hover:bg-white transition-all duration-300 shadow-lg"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-                
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm text-slate-800 p-3 rounded-full hover:bg-white transition-all duration-300 shadow-lg"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
-            )}
-
-            <div className="grid lg:grid-cols-3 max-h-[90vh]">
-              {/* Image */}
-              <div className="lg:col-span-2 relative">
-                <img
-                  src={selectedImage.src}
-                  alt={selectedImage.title}
-                  className="w-full h-full object-cover max-h-[60vh] lg:max-h-[90vh]"
-                />
-              </div>
-
-              {/* Details */}
-              <div className="p-6 lg:p-8 overflow-y-auto max-h-[30vh] lg:max-h-[90vh]">
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 bg-[#6A0DAD]/10 text-[#6A0DAD] text-sm font-semibold rounded-full">
-                    {categories.find(c => c.key === selectedImage.category)?.icon} {categories.find(c => c.key === selectedImage.category)?.label}
-                  </span>
-                </div>
-                
-                <h2 className="text-2xl font-bold text-slate-800 mb-4">{selectedImage.title}</h2>
-                
-                <div className="space-y-3 mb-6 text-sm">
-                  <div className="flex items-center gap-2 text-slate-600">
-                    <Calendar className="w-4 h-4 text-[#6A0DAD]" />
-                    <span>{new Date(selectedImage.date).toLocaleDateString('en-US', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-600">
-                    <MapPin className="w-4 h-4 text-[#228B22]" />
-                    <span>{selectedImage.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-600">
-                    <Users className="w-4 h-4 text-purple-600" />
-                    <span>{selectedImage.participants} people impacted</span>
-                  </div>
-                </div>
-                
-                <p className="text-slate-700 leading-relaxed mb-6">
-                  {selectedImage.description}
-                </p>
-                
-                <button 
-                  onClick={closeModal}
-                  className="w-full bg-gradient-to-r from-[#6A0DAD] to-[#228B22] text-white py-3 px-6 rounded-xl font-semibold hover:from-[#228B22] hover:to-[#6A0DAD] transition-all duration-300 transform hover:scale-105"
-                >
-                  Close
-                </button>
+            );
+          })}
+          
+          {/* Central focal point */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-32 h-32 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-2xl flex items-center justify-center">
+              <div className="text-center">
+                <Users className="w-8 h-8 text-[#c98d32] mx-auto mb-2" />
+                <div className="text-sm font-semibold text-gray-700">Community</div>
+                <div className="text-xs text-gray-500">Gallery</div>
               </div>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Call to Action */}
+        
+      </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-float:nth-child(even) {
+          animation-delay: -3s;
+        }
+
+        /* Custom size classes */
+        .w-22 { width: 5.5rem; }
+        .h-22 { height: 5.5rem; }
+        .w-26 { width: 6.5rem; }
+        .h-26 { height: 6.5rem; }
+      `}</style>
     </section>
   );
 };

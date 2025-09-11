@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Lock, Eye, EyeOff, Heart, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Heart, ArrowLeft, AlertCircle } from 'lucide-react';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -76,8 +76,9 @@ export default function Login() {
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-              {error}
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
+              <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
 
@@ -119,6 +120,7 @@ export default function Login() {
                   onChange={handleChange}
                   placeholder="Enter your password"
                   required
+                  autoComplete="current-password"
                   className="w-full pl-12 pr-12 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#6A0DAD]/20 focus:border-[#6A0DAD] transition-all duration-300"
                 />
                 <button

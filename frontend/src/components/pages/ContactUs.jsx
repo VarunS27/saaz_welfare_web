@@ -37,24 +37,17 @@ export default function ContactUs() {
   };
 
   return (
-    <section className="min-h-screen py-20 px-8 relative overflow-hidden">
+    <section id='contact' className="min-h-screen py-20 px-8 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
       
-      {/* Decorative elements */}
-      <div className="absolute top-20 right-10 w-32 h-32 bg-[#6A0DAD] opacity-5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 left-10 w-40 h-40 bg-[#228B22] opacity-5 rounded-full blur-3xl"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-[#6A0DAD]/10 rounded-full mb-6">
-            <Mail className="w-4 h-4 text-[#6A0DAD] mr-2" />
-            <span className="text-sm font-semibold text-[#6A0DAD]">Get in Touch</span>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-bold text-slate-800 mb-4">Contact Us</h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto mb-6"></div>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+      
+          <h2 className="text-4xl sm:text-5xl font-bold text-[#c98d32] mb-4">Contact Us</h2>
+         <p className="text-xl text-slate-600 max-w-3xl mx-auto">
             Have questions about our initiatives or want to get involved? Reach out to us.
           </p>
         </div>
