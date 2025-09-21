@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Linkedin, ArrowUp } from 'lucide-react';
+import { Facebook, Linkedin, ArrowUp } from 'lucide-react';
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -7,10 +7,8 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: '#', color: 'hover:text-blue-600' },
-    { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:text-blue-400' },
-    { name: 'Instagram', icon: Instagram, href: '#', color: 'hover:text-pink-600' },
-    { name: 'LinkedIn', icon: Linkedin, href: '#', color: 'hover:text-blue-700' }
+    { name: 'Facebook', icon: Facebook, href: 'https://www.facebook.com/profile.php?id=61571478003354', color: 'hover:text-blue-600' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/saaz-welfare-foundation-9b562b33a/', color: 'hover:text-blue-700' }
   ];
 
   return (
@@ -45,6 +43,7 @@ const Footer = () => {
                     <a
                       key={social.name}
                       href={social.href}
+                      target="_blank"
                       className={`w-9 h-9 bg-slate-700/60 hover:bg-slate-600/80 rounded-lg flex items-center justify-center text-slate-400 ${social.color} transition-all duration-300 hover:scale-110 hover:shadow-lg`}
                       aria-label={social.name}
                     >

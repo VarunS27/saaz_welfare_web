@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Heart } from "lucide-react";
 import abt from './assets/abt2.png'
+import { useDonateModal } from "./Donate";
 
 const navLinks = [
   { name: "Home", target: "home" },
@@ -14,6 +15,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const { openDonate, DonateModal } = useDonateModal();
 
   const scrollToSection = (targetId) => {
     const element = document.getElementById(targetId);
@@ -24,6 +26,11 @@ export default function Navbar() {
       });
       setIsMobileMenuOpen(false); // Close mobile menu after navigation
     }
+  };
+
+  const handleDonateClick = () => {
+    openDonate();
+    setIsMobileMenuOpen(false); // Close mobile menu if open
   };
 
   useEffect(() => {
@@ -84,14 +91,13 @@ export default function Navbar() {
         }`}
       >
         {/* Logo */}
- <div className="flex-shrink-0 flex items-center">
-        <img
-          src={abt}
-          alt="Logo"
-          className="w-full h-20 object-cover"
-      
-        />
-      </div>
+        <div className="flex-shrink-0 flex items-center">
+          <img
+            src={abt}
+            alt="Logo"
+            className="w-full h-20 object-cover"
+          />
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1">
@@ -116,8 +122,8 @@ export default function Navbar() {
         {/* Desktop Donate Button */}
         <div className="hidden lg:flex flex-shrink-0 items-center">
           <button
-            onClick={() => scrollToSection("donate")}
-            className="bg-[#228B22] text-white font-semibold text-sm xl:text-base px-6 xl:px-8 py-2.5 xl:py-3 rounded-xl shadow-lg hover:bg-[#1e7a1e] hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center group"
+            onClick={handleDonateClick}
+            className="bg-[#c98d32] hover:bg-orange-600 text-white font-semibold text-sm xl:text-base px-6 xl:px-8 py-2.5 xl:py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center group"
           >
             <Heart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
             Donate
@@ -156,12 +162,12 @@ export default function Navbar() {
           {/* Mobile Menu Header */}
           <div className="flex items-center justify-between p-6 border-b border-slate-200">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-[#6A0DAD] rounded-lg flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 bg-[#c98d32] rounded-lg flex items-center justify-center shadow-md">
                 <Heart className="w-5 h-5 text-white" />
               </div>
               <div className="ml-3">
-                <h2 className="text-lg font-bold text-[#6A0DAD]">Saaz Welfare</h2>
-                <p className="text-sm text-[#228B22] font-medium">Foundation</p>
+                <h2 className="text-lg font-bold text-[#c98d32]">Saaz Welfare</h2>
+                <p className="text-sm text-green-600 font-medium">Foundation</p>
               </div>
             </div>
             <button
@@ -181,15 +187,15 @@ export default function Navbar() {
                     onClick={() => scrollToSection(link.target)}
                     className={`w-full text-left px-4 py-4 rounded-xl font-medium text-base transition-all duration-300 flex items-center group ${
                       activeSection === link.target
-                        ? "bg-[#6A0DAD] text-white shadow-lg"
-                        : "text-slate-700 hover:bg-slate-100 hover:text-[#6A0DAD]"
+                        ? "bg-[#c98d32] text-white shadow-lg"
+                        : "text-slate-700 hover:bg-slate-100 hover:text-[#c98d32]"
                     }`}
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <span className={`w-2 h-2 rounded-full mr-3 transition-all duration-300 ${
                       activeSection === link.target 
                         ? "bg-white" 
-                        : "bg-slate-300 group-hover:bg-[#6A0DAD]"
+                        : "bg-slate-300 group-hover:bg-[#c98d32]"
                     }`}></span>
                     {link.name}
                   </button>
@@ -201,8 +207,8 @@ export default function Navbar() {
           {/* Mobile Donate Button */}
           <div className="p-6 border-t border-slate-200">
             <button
-              onClick={() => scrollToSection("donate")}
-              className="w-full bg-[#228B22] text-white font-semibold text-base py-4 rounded-xl shadow-lg hover:bg-[#1e7a1e] transition-all duration-300 flex items-center justify-center group"
+              onClick={handleDonateClick}
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold text-base py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center group"
             >
               <Heart className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
               Make a Donation
@@ -213,13 +219,16 @@ export default function Navbar() {
               <p className="text-sm text-slate-500">
                 Questions? Call us at
               </p>
-              <p className="text-sm font-semibold text-[#6A0DAD]">
-                +91 XXX XXX XXXX
+              <p className="text-sm font-semibold text-[#c98d32]">
+                7666884823 / 8779823714
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Donate Modal */}
+      <DonateModal />
     </>
   );
 }

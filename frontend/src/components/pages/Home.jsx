@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Heart, Users, Award, Globe, ArrowRight, Play } from 'lucide-react';
-import care from './assets/care1.png';
-import care1 from './assets/care2.png';
+import care from './assets/fn.jpg';
+import care1 from './assets/fn2.jpg';
 
 
 const Home = () => {
@@ -13,20 +13,21 @@ const Home = () => {
 
   const carouselImages = [
     {
-      src: care1,
-      alt: 'Community Healthcare Initiative',
-      title: 'Healthcare for All',
-      description: 'Providing quality medical care to underserved communities'
+      src: care,
+      alt: 'Community Togetherness',
+      title: 'Community functions',
+      description: 'Fostering a sense of belonging and support among community members'
     },
     {
-      src: care,
+      src: care1,
       alt: 'Educational Programs',
       title: 'Education & Learning',
       description: 'Empowering minds through quality education and skill development'
     }
   ];
 
-  const companyIntro = `Saaz Welfare Foundation is dedicated to creating positive change in communities through comprehensive welfare programs. We focus on education, healthcare, and social development initiatives that empower individuals and families.`;
+  const companyIntro = `SAAZ Welfare Foundation empowers underserved communities through mental health, music, and education. We use the healing power of music to inspire hope while mentoring students to succeed in global academics. Our mission blends compassion, culture, and knowledge for lasting impact.
+`;
 
   const stats = [
     { icon: Users, number: 10000, suffix: "+", label: "Lives Impacted", duration: 2000 },

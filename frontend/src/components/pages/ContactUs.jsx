@@ -157,9 +157,9 @@ export default function ContactUs() {
                 <div>
                   <h4 className="text-lg font-bold text-slate-800 mb-1">Address</h4>
                   <p className="text-slate-600">
-                    123 Welfare Street, <br />
-                    Mumbai, Maharashtra 400001, <br />
-                    India
+                    103 B wing, Sai dham, <br />
+                  Charkop, sector 8, Kandivali w,
+                    Mumbai-400067, 
                   </p>
                 </div>
               </div>
@@ -170,8 +170,8 @@ export default function ContactUs() {
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-slate-800 mb-1">Contact no</h4>
-                  <p className="text-slate-600">+91 98765 43210</p>
-                  <p className="text-slate-600">+91 12345 67890</p>
+                  <p className="text-slate-600" ><a href="tel:+91 7666884823">+91 7666884823</a></p>
+                  <p className="text-slate-600" ><a href="tel:+91 8779823714">+91 8779823714</a></p>
                 </div>
               </div>
               
@@ -181,8 +181,8 @@ export default function ContactUs() {
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-slate-800 mb-1">Email Us</h4>
-                  <p className="text-slate-600">contact@saazwelfare.org</p>
-                  <p className="text-slate-600">info@saazwelfare.org</p>
+                  <p className="text-slate-600"> <a href="mailto:saazwelfarefoundation@gmail.com">saazwelfarefoundation@gmail.com</a></p>
+
                 </div>
               </div>
               
@@ -199,7 +199,7 @@ export default function ContactUs() {
               
               <div className="bg-gradient-to-r from-[#6A0DAD]/10 to-[#228B22]/10 p-6 rounded-xl border border-[#6A0DAD]/20">
                 <p className="text-center text-slate-700">
-                  <span className="font-bold">Some text</span> - We value your feedback and inquiries. Our team is dedicated to responding to all messages within 24 hours. For urgent matters, please call us directly.
+              We value your feedback and inquiries. Our team is dedicated to responding to all messages within 24 hours. For urgent matters, please call us directly.
                 </p>
               </div>
             </div>

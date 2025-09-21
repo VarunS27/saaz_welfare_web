@@ -72,64 +72,38 @@ const AboutUs = () => {
     });
   };
 
-  const values = [
-    {
-      title: "Transparency",
-      description: "Complete transparency in operations and fund utilization with regular impact reports.",
-      icon: Shield,
-      color: "from-[#6A0DAD] to-purple-700"
-    },
-    {
-      title: "Innovation",
-      description: "Innovative approaches to tackle social challenges with sustainable solutions.",
-      icon: Lightbulb,
-      color: "from-[#c6651a] to-orange-600"
-    },
-    {
-      title: "Impact",
-      description: "Measurable positive change that transforms communities and individual lives.",
-      icon: TrendingUp,
-      color: "from-purple-600 to-[#6A0DAD]"
-    },
-    {
-      title: "Collaboration",
-      description: "Building strong partnerships with communities, government, and other organizations.",
-      icon: Handshake,
-      color: "from-orange-500 to-[#c6651a]"
-    }
-  ];
+
 
   const tabContent = {
     mission: {
       title: "Our Mission",
       icon: Target,
-      content: "To empower communities through comprehensive welfare programs that focus on education, healthcare, and social development. We strive to create sustainable solutions that address root causes of social issues while fostering self-reliance and building capacity within communities.",
+      content: "To uplift underserved communities by leveraging the healing power of music and providing education support that helps students adapt, grow, and succeed globally.",
       highlights: [
-        "Comprehensive community welfare programs",
-        "Focus on education and healthcare access",
+        "Music-driven mental health and wellness initiatives",
+        "Academic mentorship for overseas students",
         "Sustainable development initiatives",
-        "Building community capacity and self-reliance"
+        "Sustainable programs that inspire dignity and growth"
       ]
     },
     vision: {
       title: "Our Vision",
       icon: Globe,
-      content: "We envision a world where every individual has equal opportunities to thrive and succeed. Our vision is to build resilient communities that can sustain themselves and support their members effectively, minimizing social inequalities.",
+      content: "To build a world where mental well-being, education, and cultural arts empower individuals to live with dignity, resilience, and hope.",
       highlights: [
-        "Equal opportunities for all individuals",
-        "Building resilient, self-sustaining communities",
-        "Minimizing social inequalities",
-        "Creating lasting positive change"
+        "Promote mental health through music and compassion",
+        "Foster inclusive and empowered communities",
+        "Bridge culture, education, and humanity"
       ]
     },
     story: {
       title: "Our Story",
       icon: Building,
-      content: "Founded with a simple yet powerful belief that collective action can create extraordinary change, Saaz Welfare has grown from a small community initiative to a comprehensive welfare organization serving multiple communities across regions.",
+      content: "SAAZ Welfare Foundation was born from a passion for music and international management, blending compassion with cultural arts to drive social change. Since 2010, we have supported emotional healing and academic mentorship, creating opportunities for individuals to thrive.",
       highlights: [
-        "Started as a grassroots community initiative",
-        "Grown to serve 15+ communities",
-        "Passionate team of dedicated professionals",
+        "Founded with a vision to unite culture and welfare",
+        "Over a decade of student mentorship and support",
+        "Empowering lives through music, education, and care",
         "Continuous expansion of impact areas"
       ]
     }
