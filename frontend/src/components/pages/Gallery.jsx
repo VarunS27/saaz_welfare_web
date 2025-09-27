@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, Heart, Users, Eye, Play, Pause, Grid, List, Search, Filter, X, ArrowLeft, ArrowRight, Star, MapPin } from 'lucide-react';
+import { X, ZoomIn } from 'lucide-react';
+import { getCloudinaryUrl } from '../../config/cloudinary';
+import { IMAGES, FALLBACK_IMAGES } from '../../constants/images';
 
 const Gallery = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'masonry'
-  const [filter, setFilter] = useState('all');
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const galleryRef = useRef(null);
 
   // Intersection Observer for animations
@@ -35,261 +34,268 @@ const Gallery = () => {
     };
   }, []);
 
-  // Auto-play slideshow
-  useEffect(() => {
-    if (isPlaying && selectedImage) {
-      const interval = setInterval(() => {
-        handleNextImage();
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [isPlaying, selectedImage, currentImageIndex]);
-
-  // Gallery data with categories
-  const galleryData = [
+  // Gallery images
+  const galleryImages = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop",
-      height: 'h-64'
+      src: IMAGES.gallery.image1,
+      alt: 'Community gathering and cultural function'
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&h=600&fit=crop",
-      height: 'h-80'
+      src: IMAGES.gallery.image2,
+      alt: 'Educational program and learning activities'
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=300&fit=crop",
-      height: 'h-48'
+      src: IMAGES.gallery.image3,
+      alt: 'Team members collaborating on projects'
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=600&h=500&fit=crop",
-      height: 'h-72'
+      src: IMAGES.gallery.image4,
+      alt: 'Community outreach and social work'
     },
     {
       id: 5,
-      src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&h=400&fit=crop",
-      height: 'h-64'
+      src: IMAGES.gallery.image5,
+      alt: 'Healthcare and medical support programs'
     },
     {
       id: 6,
-      src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&h=350&fit=crop",
-      height: 'h-56'
+      src: IMAGES.gallery.image6,
+      alt: 'Youth development and mentorship programs'
     },
     {
       id: 7,
-      src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&h=450&fit=crop",
-      height: 'h-68'
+      src: IMAGES.gallery.image7,
+      alt: 'Women empowerment and skill development'
     },
     {
       id: 8,
-      src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=550&fit=crop",
-      height: 'h-76'
+      src: IMAGES.gallery.image8,
+      alt: 'Environmental conservation activities'
     },
     {
       id: 9,
-      src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&h=400&fit=crop",
-      height: 'h-64'
+      src: IMAGES.gallery.image9,
+      alt: 'Cultural heritage preservation activities'
     },
     {
       id: 10,
-      src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=300&fit=crop",
-      height: 'h-48'
-    },
-    {
-      id: 11,
-      src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=500&fit=crop",
-      height: 'h-72'
-    },
-    {
-      id: 12,
-      src: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&h=400&fit=crop",
-      height: 'h-64'
+      src: IMAGES.gallery.image10,
+      alt: 'Music therapy and healing programs'
     }
   ];
 
-  const categories = [
-    { id: 'all', name: 'All Projects', color: 'from-slate-500 to-slate-600' },
-    { id: 'healthcare', name: 'Healthcare', color: 'from-red-500 to-red-600' },
-    { id: 'education', name: 'Education', color: 'from-blue-500 to-blue-600' },
-    { id: 'environment', name: 'Environment', color: 'from-green-500 to-green-600' },
-    { id: 'empowerment', name: 'Empowerment', color: 'from-[#c98d32] to-orange-600' },
-    { id: 'community', name: 'Community', color: 'from-purple-500 to-purple-600' }
-  ];
+  // Get optimized image URL
+  const getGalleryImageUrl = (publicId, size = 'medium') => {
+    if (!publicId) return FALLBACK_IMAGES.defaultImage;
+    
+    const sizeConfig = {
+      thumbnail: { width: 400, height: 300 },
+      medium: { width: 800, height: 600 },
+      large: { width: 1200, height: 900 }
+    };
+    
+    return getCloudinaryUrl(publicId, { 
+      resize: { ...sizeConfig[size], crop: 'fill' } 
+    });
+  };
 
-  // Filter images based on category and search
-  const filteredImages = galleryData.filter(image => {
-    const matchesCategory = filter === 'all';
-    const matchesSearch = true;
-    return matchesCategory && matchesSearch;
-  });
-
-  const openModal = (image, index) => {
+  // Handle image click
+  const openLightbox = (image, index) => {
     setSelectedImage(image);
     setCurrentImageIndex(index);
-    document.body.style.overflow = 'hidden';
   };
 
-  const closeModal = () => {
-    setSelectedImage(null);
-    setIsPlaying(false);
-    document.body.style.overflow = 'unset';
-  };
+  // Handle keyboard navigation in lightbox
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (!selectedImage) return;
+      
+      if (e.key === 'Escape') {
+        setSelectedImage(null);
+      } else if (e.key === 'ArrowLeft') {
+        navigateImage('prev');
+      } else if (e.key === 'ArrowRight') {
+        navigateImage('next');
+      }
+    };
 
-  const handlePrevImage = () => {
-    const newIndex = currentImageIndex === 0 ? filteredImages.length - 1 : currentImageIndex - 1;
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedImage, currentImageIndex]);
+
+  const navigateImage = (direction) => {
+    const maxIndex = galleryImages.length - 1;
+    let newIndex;
+    
+    if (direction === 'next') {
+      newIndex = currentImageIndex >= maxIndex ? 0 : currentImageIndex + 1;
+    } else {
+      newIndex = currentImageIndex <= 0 ? maxIndex : currentImageIndex - 1;
+    }
+    
     setCurrentImageIndex(newIndex);
-    setSelectedImage(filteredImages[newIndex]);
+    setSelectedImage(galleryImages[newIndex]);
   };
 
-  const handleNextImage = () => {
-    const newIndex = currentImageIndex === filteredImages.length - 1 ? 0 : currentImageIndex + 1;
-    setCurrentImageIndex(newIndex);
-    setSelectedImage(filteredImages[newIndex]);
-  };
+  // Simulate loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section id="gallery" className="min-h-screen py-16 lg:py-24 relative overflow-hidden">
-      {/* Background with brand colors */}
-      <div className="absolute opacity-70 inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50 opacity-70">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-[#c98d32] opacity-5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500 opacity-5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-green-500 opacity-3 rounded-full blur-3xl animate-pulse delay-2000"></div>
+          <div className="absolute top-20 left-10 w-64 h-64 bg-purple-500 opacity-5 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#c98d32] opacity-5 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
       </div>
 
       <div ref={galleryRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="text-center mb-16">
-
-          
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8">
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 bg-clip-text text-transparent">
-              Stories of Change
+              Our Beautiful Moments
             </span>
             <br />
-            <span className="text-slate-800 text-4xl sm:text-5xl lg:text-6xl">Through Pictures</span>
+            In Pictures
           </h2>
           
-          <p className="text-xl lg:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed mb-12">
-            Every image captures a moment of transformation, hope, and community impact. 
-            Explore our journey of creating positive change across communities.
+          <p className="text-xl lg:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
+            Explore the beautiful moments that define our mission and celebrate our impact.
           </p>
 
-          {/* <div className="w-24 h-1 bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 rounded-full mx-auto"></div> */}
+          <div className="w-24 h-1 bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 rounded-full mx-auto mt-8"></div>
         </div>
 
-      
-
         {/* Gallery Grid */}
-        <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-          <div className={`grid gap-6 ${
-            viewMode === 'grid' 
-              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' 
-              : 'columns-1 md:columns-2 lg:columns-3 space-y-6'
-          }`}>
-            {filteredImages.map((image, index) => (
-              <div
-                key={image.id}
-                className={`group cursor-pointer transform transition-all duration-500 hover:scale-105 ${
-                  viewMode === 'masonry' ? 'break-inside-avoid mb-6' : ''
-                }`}
-                onClick={() => openModal(image, index)}
-              >
-                <div className={`relative overflow-hidden rounded-3xl bg-white shadow-xl hover:shadow-2xl transition-all duration-500 ${
-                  viewMode === 'grid' ? image.height : 'h-auto'
-                }`}>
-                  <img
-                    src={image.src}
-                    alt=""
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <div className="flex items-center justify-end">
-                        <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
-                          <Eye className="w-4 h-4" />
-                        </div>
+        <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          {isLoading ? (
+            // Loading Skeleton
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(10)].map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg animate-pulse h-64"
+                >
+                  <div className="w-full h-full bg-slate-200"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {galleryImages.map((image, index) => (
+                <div
+                  key={image.id}
+                  className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 animate-fadeInUp h-64"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={() => openLightbox(image, index)}
+                >
+                  <div className="relative overflow-hidden w-full h-full">
+                    <img
+                      src={getGalleryImageUrl(image.src, 'medium')}
+                      alt={image.alt}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        console.log(`Gallery image ${image.id} failed to load, using fallback`);
+                        e.target.src = FALLBACK_IMAGES.defaultImage;
+                      }}
+                    />
+                    
+                    {/* Simple hover overlay with zoom icon */}
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full">
+                        <ZoomIn className="w-6 h-6 text-white" />
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
-
-        {/* Results Count */}
-        {(searchTerm || filter !== 'all') && (
-          <div className="mt-8 text-center">
-            <p className="text-slate-600">
-              Showing <span className="font-semibold text-[#c98d32]">{filteredImages.length}</span> of {galleryData.length} projects
-              {searchTerm && (
-                <span> for "<span className="font-semibold">{searchTerm}</span>"</span>
-              )}
-            </p>
-          </div>
-        )}
-
-
       </div>
 
-      {/* Modal */}
+      {/* Clean Lightbox Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="relative w-96 bg-white rounded-3xl overflow-hidden shadow-2xl">
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-6xl max-h-full">
             
             {/* Close Button */}
             <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-2 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all duration-300"
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white p-2 rounded-full hover:bg-black/70 transition-all duration-300 z-10"
             >
               <X className="w-6 h-6" />
             </button>
 
             {/* Navigation Buttons */}
             <button
-              onClick={handlePrevImage}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all duration-300"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigateImage('prev');
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white p-3 rounded-full hover:bg-black/70 transition-all duration-300"
             >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={handleNextImage}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all duration-300"
-            >
-              <ArrowRight className="w-6 h-6" />
+              <div className="w-6 h-6 border-l-2 border-t-2 border-white transform -rotate-45"></div>
             </button>
 
-            {/* Play/Pause Button */}
             <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="absolute top-4 left-4 z-10 p-2 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-all duration-300"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigateImage('next');
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 backdrop-blur-sm text-white p-3 rounded-full hover:bg-black/70 transition-all duration-300"
             >
-              {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
+              <div className="w-6 h-6 border-r-2 border-t-2 border-white transform rotate-45"></div>
             </button>
 
-            <div className="grid lg:grid-cols-1 max-h-full">
-              {/* Image */}
-              <div className="relative h-64 lg:h-auto">
-                <img
-                  src={selectedImage.src}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
- 
+            {/* Full Size Image */}
+            <img
+              src={getGalleryImageUrl(selectedImage.src, 'large')}
+              alt={selectedImage.alt}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {/* Simple Image Counter */}
+            <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold">
+              {currentImageIndex + 1} / {galleryImages.length}
             </div>
           </div>
         </div>
       )}
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fadeInUp {
+          animation: fadeInUp 0.6s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
     </section>
   );
 };

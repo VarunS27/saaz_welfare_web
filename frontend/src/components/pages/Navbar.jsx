@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Heart } from "lucide-react";
-import abt from './assets/abt2.png'
+import { getCloudinaryUrl } from '../../config/cloudinary';
+import { IMAGES, FALLBACK_IMAGES, DIRECT_URLS } from '../../constants/images';
 import { useDonateModal } from "./Donate";
 
 const navLinks = [
@@ -24,13 +25,13 @@ export default function Navbar() {
         behavior: "smooth",
         block: "start",
       });
-      setIsMobileMenuOpen(false); // Close mobile menu after navigation
+      setIsMobileMenuOpen(false);
     }
   };
 
   const handleDonateClick = () => {
     openDonate();
-    setIsMobileMenuOpen(false); // Close mobile menu if open
+    setIsMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -38,7 +39,6 @@ export default function Navbar() {
       const scrollTop = window.scrollY;
       setIsScrolled(scrollTop > 50);
 
-      // Update active section based on scroll position
       const sections = navLinks.map(link => link.target);
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
@@ -56,7 +56,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isMobileMenuOpen && !event.target.closest('.mobile-menu-container')) {
@@ -68,7 +67,6 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMobileMenuOpen]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -80,6 +78,9 @@ export default function Navbar() {
       document.body.style.overflow = 'unset';
     };
   }, [isMobileMenuOpen]);
+
+  // Get logo image with fallback
+  const logoSrc = DIRECT_URLS.logo || FALLBACK_IMAGES.logo;
 
   return (
     <>
@@ -93,9 +94,13 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
           <img
-            src={abt}
-            alt="Logo"
+            src={logoSrc}
+            alt="Saaz Welfare Foundation Logo"
             className="w-full h-20 object-cover"
+            onError={(e) => {
+              console.log('Logo failed to load, using fallback');
+              e.target.src = FALLBACK_IMAGES.logo;
+            }}
           />
         </div>
 
@@ -220,7 +225,8 @@ export default function Navbar() {
                 Questions? Call us at
               </p>
               <p className="text-sm font-semibold text-[#c98d32]">
-                7666884823 / 8779823714
+                <a href="tel=7666884823">+91 76668 84823</a> <br />
+                <a href="tel=8779823714">+91 87798 23714</a>
               </p>
             </div>
           </div>

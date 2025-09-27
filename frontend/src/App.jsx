@@ -8,28 +8,35 @@ import Home from './components/pages/Home';
 import AboutUs from './components/pages/AboutUs';
 import Events from './components/pages/Events';
 import Gallery from './components/pages/Gallery';
+import Team from './components/pages/Team';
 import ContactUs from './components/pages/ContactUs';
 import Footer from './components/pages/Footer';
 import NotFound from './components/NotFound';
 
 // Auth Components
 import { AuthProvider } from './components/context/AuthContext';
-import Login from './components/auth/Login';
+
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Dashboard from './components/Dashboard/Dashboard';
 
-// Assets
-import grp from './components/pages/assets/grp.jpg';
+// Cloudinary images
+import { getCloudinaryUrl } from './config/cloudinary';
+import { IMAGES, FALLBACK_IMAGES, DIRECT_URLS } from './constants/images';
 import { Heart } from 'lucide-react';
 
 function App() {
+  // Get background image from Cloudinary with fallback
+  const backgroundImage = getCloudinaryUrl(IMAGES.about.grp, { 
+    resize: { width: 1920, height: 1080, crop: 'fill' } 
+  }) || DIRECT_URLS.backgroundGrp || FALLBACK_IMAGES.grp;
+
   return (
     <AuthProvider>
       <Router>
         <Routes>
           
           {/* Admin Routes */}
-          <Route path="/admin/login" element={<Login />} />
+       
           <Route 
             path="/admin/dashboard" 
             element={
@@ -43,7 +50,7 @@ function App() {
           <Route path="/" element={
             <div className="min-h-screen relative overflow-hidden"
                  style={{
-                   backgroundImage: `url(${grp})`,
+                   backgroundImage: `url(${backgroundImage})`,
                    backgroundSize: 'cover',
                    backgroundPosition: 'center',
                    backgroundRepeat: 'no-repeat',
@@ -89,6 +96,7 @@ function App() {
                 <AboutUs />
                 <Events />
                 <Gallery />
+                <Team />
                 <ContactUs />
                 <Footer />
               </div>

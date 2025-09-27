@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Heart, Users, Award, Globe, ArrowRight, Play } from 'lucide-react';
-import care from './assets/fn.jpg';
-import care1 from './assets/fn2.jpg';
-
+import { ChevronLeft, ChevronRight, Heart, Users, Award, Globe } from 'lucide-react';
+import { getCloudinaryUrl } from '../../config/cloudinary';
+import { IMAGES, FALLBACK_IMAGES, DIRECT_URLS } from '../../constants/images';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -11,23 +10,29 @@ const Home = () => {
   const [isMobile, setIsMobile] = useState(false);
   const statsRef = useRef(null);
 
+  // Updated carousel images to use Cloudinary
   const carouselImages = [
     {
-      src: care,
+      src: getCloudinaryUrl(IMAGES.about.fn, { 
+        resize: { width: 800, height: 500, crop: 'fill' } 
+      }) || DIRECT_URLS.carouselFn,
+      fallback: FALLBACK_IMAGES.fn,
       alt: 'Community Togetherness',
       title: 'Community functions',
       description: 'Fostering a sense of belonging and support among community members'
     },
     {
-      src: care1,
+      src: getCloudinaryUrl(IMAGES.about.fn2, { 
+        resize: { width: 800, height: 500, crop: 'fill' } 
+      }) || DIRECT_URLS.carouselFn2,
+      fallback: FALLBACK_IMAGES.fn2,
       alt: 'Educational Programs',
       title: 'Education & Learning',
       description: 'Empowering minds through quality education and skill development'
     }
   ];
 
-  const companyIntro = `SAAZ Welfare Foundation empowers underserved communities through mental health, music, and education. We use the healing power of music to inspire hope while mentoring students to succeed in global academics. Our mission blends compassion, culture, and knowledge for lasting impact.
-`;
+  const companyIntro = `SAAZ Welfare Foundation empowers underserved communities through mental health, music, and education. We use the healing power of music to inspire hope while mentoring students to succeed in global academics. Our mission blends compassion, culture, and knowledge for lasting impact.`;
 
   const stats = [
     { icon: Users, number: 10000, suffix: "+", label: "Lives Impacted", duration: 2000 },
@@ -99,7 +104,7 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
-    }, 6000); // 6 seconds for better mobile experience
+    }, 6000);
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
@@ -119,35 +124,65 @@ const Home = () => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
+  // Get Maa Saraswati image (circular)
+  const maaSaraswatiSrc = getCloudinaryUrl(IMAGES.sacred.maaSaraswati, { 
+    resize: { width: 200, height: 200, crop: 'fill' } 
+  }) || DIRECT_URLS.maaSaraswati;
+
   return (
-    <div className="relative z-20  min-h-screen">
+    <div className="relative z-20 min-h-screen">
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
       
-
       {/* Hero Section */}
       <section id="home" className="min-h-screen relative z-10">
         <div className="relative pt-20 sm:pt-28 lg:pt-32 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[calc(100vh-8rem)]">
               
-              {/* Content Section - Mobile First */}
+              {/* Content Section */}
               <div className="space-y-6 sm:space-y-8 lg:space-y-10 order-1 lg:order-2">
                 
-                {/* Main Title Card */}
-                <div className=" backdrop-blur-sm p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
-                  <div className="space-y-4 sm:space-y-6">                  
-                    <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight">
-                      Welcome to{' '}
-                      <span className="relative inline-block">
-                        <span className="text-green-800">Saaz Welfare</span>
-                        {/* <div className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-0.5 sm:h-1 bg-[#228B22] rounded-full"></div> */}
-                      </span>{' '}
-                      <span className="text-[#c98d32]  px-2 py-1 rounded-lg inline-block mt-2 sm:mt-0"
-                      style={{ animation: 'fade-in 2s infinite' }}
-                      >Foundation</span>
-                    </h1>
+                {/* Simple Beautiful Title Card */}
+                <div className="backdrop-blur-sm bg-white/80 p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
+                  
+                  <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
                     
+                    {/* Title Section */}
+                    <div className="flex-1 text-center lg:text-left">
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight mb-4">
+                        Welcome to{' '}
+                        <span className="text-green-700 block sm:inline">
+                          Saaz Welfare
+                        </span>{' '}
+                        <span className="text-[#c98d32] block sm:inline">
+                          Foundation
+                        </span>
+                      </h1>
+                      
 
+                    </div>
+
+                    {/* Simple Circular Maa Saraswati Image */}
+                    <div className="flex-shrink-0">
+                      <div className="relative group">
+                        <img
+                          src={maaSaraswatiSrc}
+                          alt="Maa Saraswati - Goddess of Knowledge"
+                          className="w-32 h-32 lg:w-40 lg:h-40 rounded-full shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                          onError={(e) => {
+                            console.log('Maa Saraswati image failed to load from Cloudinary, using fallback');
+                            e.target.src = FALLBACK_IMAGES.maaSaraswati;
+                          }}
+                        />
+                        
+                        {/* Simple blessing text */}
+                        <div className="text-center mt-3">
+                          <p className="text-sm text-orange-700 font-semibold">
+                            🙏 माँ सरस्वती की कृपा 🙏
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
@@ -157,11 +192,9 @@ const Home = () => {
                     {companyIntro}
                   </p>
                 </div>
-                
-
               </div>
 
-              {/* Enhanced Carousel Section */}
+              {/* Carousel Section */}
               <div className="relative order-2 lg:order-1">
                 <div className="relative w-full h-64 sm:h-80 lg:h-96 xl:h-[500px] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl bg-white/90 backdrop-blur-sm border border-white/50">
                   
@@ -177,22 +210,24 @@ const Home = () => {
                       <img
                         src={image.src}
                         alt={image.alt}
-                        className="w-full h-full "
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          console.log(`Carousel image ${index} failed to load from Cloudinary, using fallback`);
+                          e.target.src = image.fallback;
+                        }}
                       />
                       
-                      {/* Enhanced Caption */}
+                      {/* Caption */}
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 sm:p-6">
                         <div className="text-white">
                           <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2">{image.title}</h3>
                           <p className="text-sm sm:text-base text-white/90">{image.description}</p>
                         </div>
                       </div>
-
-
                     </div>
                   ))}
                   
-                  {/* Navigation buttons - Hidden on very small screens */}
+                  {/* Navigation buttons */}
                   {!isMobile && (
                     <>
                       <button
@@ -210,11 +245,9 @@ const Home = () => {
                       </button>
                     </>
                   )}
-
-
                 </div>
                 
-                {/* Enhanced Slide Indicators */}
+                {/* Slide Indicators */}
                 <div className="flex justify-center mt-4 sm:mt-6 lg:mt-8 space-x-2 sm:space-x-3">
                   {carouselImages.map((_, index) => (
                     <button
@@ -242,17 +275,17 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Animated Stats Section */}
+      {/* Stats Section */}
       <section ref={statsRef} className="py-12 sm:py-16 lg:py-20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Stats Header */}
-<div className="text-center mb-8 sm:mb-12">
-  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-4">
-    Our <span className="text-[#c6651a] " style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>Impact</span> in Numbers
-  </h2>
-  <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto"></div>
-</div>
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-4">
+              Our <span className="text-[#c6651a]" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>Impact</span> in Numbers
+            </h2>
+            <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-[#228B22] to-[#6A0DAD] rounded-full mx-auto"></div>
+          </div>
 
           {/* Stats Grid */}
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 border border-white/50 shadow-xl">
