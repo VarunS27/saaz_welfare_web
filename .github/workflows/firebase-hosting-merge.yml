@@ -1,3 +1,10 @@
+name: Deploy to Firebase Hosting on merge
+
+on:
+  push:
+    branches:
+      - main   # Trigger when code is pushed/merged to main
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -20,7 +27,7 @@ jobs:
       - name: Deploy to Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SAAZ_16AE6 }}'
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SAAZ_16AE6 }}
           channelId: live
           projectId: saaz-16ae6
