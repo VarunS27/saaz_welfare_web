@@ -20,7 +20,7 @@ const Gallery = () => {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: '0px' } // Added rootMargin
     );
 
     if (galleryRef.current) {
@@ -107,6 +107,8 @@ const Gallery = () => {
   const openLightbox = (image, index) => {
     setSelectedImage(image);
     setCurrentImageIndex(index);
+    // Prevent body scroll when lightbox is open
+    document.body.style.overflow = 'hidden';
   };
 
   // Handle keyboard navigation in lightbox
@@ -116,6 +118,7 @@ const Gallery = () => {
       
       if (e.key === 'Escape') {
         setSelectedImage(null);
+        document.body.style.overflow = 'unset'; // Restore scroll
       } else if (e.key === 'ArrowLeft') {
         navigateImage('prev');
       } else if (e.key === 'ArrowRight') {
@@ -141,7 +144,13 @@ const Gallery = () => {
     setSelectedImage(galleryImages[newIndex]);
   };
 
-  // Simulate loading
+  // Close lightbox function
+  const closeLightbox = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'unset'; // Restore scroll
+  };
+
+  // Simulate loading with fixed height
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -150,19 +159,19 @@ const Gallery = () => {
   }, []);
 
   return (
-    <section id="gallery" className="min-h-screen py-16 lg:py-24 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50 opacity-70">
+    <section id="gallery" className="py-16 lg:py-24 relative overflow-hidden" style={{ minHeight: 'auto' }}>
+      {/* Fixed Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50 opacity-70" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-purple-500 opacity-5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#c98d32] opacity-5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-20 left-10 w-64 h-64 bg-purple-500 opacity-5 rounded-full blur-3xl" style={{ animation: 'pulse 2s infinite' }}></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#c98d32] opacity-5 rounded-full blur-3xl" style={{ animation: 'pulse 2s infinite', animationDelay: '1s' }}></div>
         </div>
       </div>
 
       <div ref={galleryRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header */}
-        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+        {/* Header with fixed positioning */}
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ willChange: 'auto' }}>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 bg-clip-text text-transparent">
               Our Beautiful Moments
@@ -178,15 +187,16 @@ const Gallery = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 rounded-full mx-auto mt-8"></div>
         </div>
 
-        {/* Gallery Grid */}
-        <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+        {/* Gallery Grid with fixed container height */}
+        <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`} style={{ willChange: 'auto' }}>
           {isLoading ? (
-            // Loading Skeleton
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            // Loading Skeleton with fixed height
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" style={{ minHeight: '800px' }}>
               {[...Array(10)].map((_, index) => (
                 <div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg animate-pulse h-64"
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg h-64"
+                  style={{ animation: 'pulse 1.5s ease-in-out infinite' }}
                 >
                   <div className="w-full h-full bg-slate-200"></div>
                 </div>
@@ -197,15 +207,26 @@ const Gallery = () => {
               {galleryImages.map((image, index) => (
                 <div
                   key={image.id}
-                  className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:scale-105 animate-fadeInUp h-64"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer h-64"
+                  style={{ 
+                    animationDelay: `${index * 100}ms`,
+                    transform: 'translateZ(0)', // Force hardware acceleration
+                    willChange: 'transform'
+                  }}
                   onClick={() => openLightbox(image, index)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05) translateZ(0)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1) translateZ(0)';
+                  }}
                 >
                   <div className="relative overflow-hidden w-full h-full">
                     <img
                       src={getGalleryImageUrl(image.src, 'medium')}
                       alt={image.alt}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-500"
+                      style={{ willChange: 'transform' }}
                       onError={(e) => {
                         console.log(`Gallery image ${image.id} failed to load, using fallback`);
                         e.target.src = FALLBACK_IMAGES.defaultImage;
@@ -226,11 +247,12 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* Clean Lightbox Modal */}
+      {/* Lightbox Modal - same as before but with fixed positioning */}
       {selectedImage && (
         <div 
           className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+          onClick={closeLightbox}
         >
           <div className="relative max-w-6xl max-h-full">
             

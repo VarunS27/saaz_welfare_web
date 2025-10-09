@@ -37,7 +37,7 @@ export default function ContactUs() {
   };
 
   return (
-    <section id='contact' className="relative overflow-hidden -mt-1">
+    <section id='contact' className="relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 opacity-70"></div>
       

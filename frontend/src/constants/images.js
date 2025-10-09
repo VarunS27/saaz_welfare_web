@@ -39,6 +39,9 @@ export const IMAGES = {
     member3: '7511ed1c_uygzuc',
     member4: 'bdc26a27_t0wpqk',
     member5: 'e6019589_pgtjvr',
+    member6: '0f561e_velth9',
+    member7: '0b63d_rorpum',
+    member8: '8017_jqvr8m',
   },
   
   // Events images
@@ -79,6 +82,8 @@ export const DIRECT_URLS = {
   teamMember3: getDirectCloudinaryUrl('7511ed1c_uygzuc', 'w_400,h_500,c_fill,q_auto,f_auto'),
   teamMember4: getDirectCloudinaryUrl('bdc26a27_t0wpqk', 'w_400,h_500,c_fill,q_auto,f_auto'),
   teamMember5: getDirectCloudinaryUrl('e6019589_pgtjvr', 'w_400,h_500,c_fill,q_auto,f_auto'),
-
+  teamMember6: getDirectCloudinaryUrl('0f561e_velth9', 'w_400,h_500,c_fill,q_auto,f_auto'),
+  teamMember7: getDirectCloudinaryUrl('0b63d_rorpum', 'w_400,h_500,c_fill,q_auto,f_auto'),
+  teamMember8: getDirectCloudinaryUrl('8017_jqvr8m', 'w_400,h_500,c_fill,q_auto,f_auto'),
 
 };

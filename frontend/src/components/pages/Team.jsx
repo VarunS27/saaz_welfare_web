@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Users, Award, Mail, Phone, Linkedin, Twitter, MapPin, Calendar, Star, Heart } from 'lucide-react';
 import { getCloudinaryUrl } from '../../config/cloudinary';
 import { IMAGES, FALLBACK_IMAGES } from '../../constants/images';
+import { name } from '@cloudinary/url-gen/actions/namedTransformation';
 
 const Team = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -64,6 +65,24 @@ const Team = () => {
       position: "Operations Executive",
       image: IMAGES.team.member5,
 
+    }
+    ,{
+      id: 6,
+      name: "Dipti Nanda", // Replace with actual name
+      position: "President",
+      image: IMAGES.team.member6,
+    },
+    {
+      id: 7,
+      name: "Mr. Ashok Shinde",
+      position: "Head operations",
+      image: IMAGES.team.member7,
+    },
+    {
+      id: 8,
+      name: "Ms. Saee Pradeep Chitnis",
+      position: "Committee member",
+      image: IMAGES.team.member8,
     }
   ];
 
@@ -131,7 +150,7 @@ const Team = () => {
           {/* Second Row - 3 Members (Centered) */}
           <div className="flex justify-center">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-6xl">
-              {teamMembers.slice(2, 5).map((member, index) => (
+              {teamMembers.slice(2, 8).map((member, index) => (
                 <TeamCard 
                   key={member.id} 
                   member={member} 
