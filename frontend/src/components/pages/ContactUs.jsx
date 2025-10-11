@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
     name: '',
+    mobile: '',
     email: '',
     subject: '',
     message: ''
@@ -20,19 +22,92 @@ export default function ContactUs() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSubmitStatus({ success: true, message: 'Thank you! Your message has been received.' });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      // EmailJS configuration
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      // Debug: Check if environment variables are loaded
+      console.log('Service ID:', serviceId);
+      console.log('Template ID:', templateId);
+      console.log('Public Key:', publicKey ? 'Loaded' : 'Missing');
+
+      // Check if any are undefined
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('Missing EmailJS configuration. Please check your environment variables.');
+      }
+
+      // Prepare template parameters
+      const templateParams = {
+        from_name: formData.name,
+        mobile_number: formData.mobile,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        email: formData.email, // For reply-to field in EmailJS template
+        submission_time: new Date().toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      };
+
+      console.log('Template params:', templateParams);
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
+      );
+
+      console.log('Email sent successfully:', response);
+      
+      setSubmitStatus({ 
+        success: true, 
+        message: 'Thank you! Your message has been sent successfully. We will get back to you within 24 hours.' 
+      });
+      
+      // Reset form
+      setFormData({ name: '', mobile: '', email: '', subject: '', message: '' });
+
     } catch (error) {
-      setSubmitStatus({ success: false, message: 'Something went wrong. Please try again later.' });
+      console.error('Email sending failed:', error);
+      console.error('Error object:', JSON.stringify(error, null, 2));
+      
+      // More specific error messages - Fixed the undefined error
+      let errorMessage = 'Sorry, there was an error sending your message. ';
+      
+      if (error && error.message && error.message.includes('Missing EmailJS configuration')) {
+        errorMessage += 'Configuration error. Please contact the administrator.';
+      } else if (error && error.status === 400) {
+        errorMessage += 'Invalid request. Please check all fields and try again.';
+      } else if (error && error.status === 401) {
+        errorMessage += 'Authentication error. Please contact the administrator.';
+      } else if (error && error.status === 422) {
+        errorMessage += 'Invalid template parameters. Please contact the administrator.';
+      } else if (error && error.text) {
+        errorMessage += `Server error: ${error.text}`;
+      } else {
+        errorMessage += 'Please try again or contact us directly.';
+      }
+      
+      setSubmitStatus({ 
+        success: false, 
+        message: errorMessage
+      });
     } finally {
       setIsSubmitting(false);
-      // Reset success message after 5 seconds
+      
+      // Clear status message after 8 seconds
       setTimeout(() => {
         setSubmitStatus(null);
-      }, 5000);
+      }, 8000);
     }
   };
 
@@ -75,8 +150,32 @@ export default function ContactUs() {
                   onChange={handleChange}
                   placeholder="Enter your full name"
                   required
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#6A0DAD] focus:ring-2 focus:ring-[#6A0DAD]/20 transition-all duration-300 text-sm sm:text-base"
+                  minLength={2}
+                  maxLength={100}
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#228B22] focus:ring-2 focus:ring-[#228B22]/20 transition-all duration-300 text-sm sm:text-base"
                 />
+              </div>
+
+              <div>
+                <label htmlFor="mobile" className="block text-sm font-medium text-slate-700 mb-1 sm:mb-2">
+                  Mobile Number *
+                </label>
+                <input
+                  type="tel"
+                  id="mobile"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  placeholder="+91 9876543210"
+                  required
+                  pattern="[+]?[0-9\s\-\(\)]{10,15}"
+                  minLength={10}
+                  maxLength={15}
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#228B22] focus:ring-2 focus:ring-[#228B22]/20 transition-all duration-300 text-sm sm:text-base"
+                />
+                <div className="text-xs text-slate-500 mt-1">
+                  Please include country code (e.g., +91 for India)
+                </div>
               </div>
               
               <div>
@@ -91,7 +190,7 @@ export default function ContactUs() {
                   onChange={handleChange}
                   placeholder="your.email@example.com"
                   required
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#6A0DAD] focus:ring-2 focus:ring-[#6A0DAD]/20 transition-all duration-300 text-sm sm:text-base"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#228B22] focus:ring-2 focus:ring-[#228B22]/20 transition-all duration-300 text-sm sm:text-base"
                 />
               </div>
               
@@ -107,7 +206,9 @@ export default function ContactUs() {
                   onChange={handleChange}
                   placeholder="How can we help you?"
                   required
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#6A0DAD] focus:ring-2 focus:ring-[#6A0DAD]/20 transition-all duration-300 text-sm sm:text-base"
+                  minLength={5}
+                  maxLength={200}
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#228B22] focus:ring-2 focus:ring-[#228B22]/20 transition-all duration-300 text-sm sm:text-base"
                 />
               </div>
               
@@ -122,21 +223,26 @@ export default function ContactUs() {
                   onChange={handleChange}
                   placeholder="Write your message here..."
                   required
+                  minLength={10}
+                  maxLength={1000}
                   rows={4}
-                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#6A0DAD] focus:ring-2 focus:ring-[#6A0DAD]/20 transition-all duration-300 resize-none text-sm sm:text-base"
+                  className="w-full px-3 py-2 sm:px-4 sm:py-3 rounded-lg sm:rounded-xl border border-slate-200 focus:border-[#228B22] focus:ring-2 focus:ring-[#228B22]/20 transition-all duration-300 resize-none text-sm sm:text-base"
                 />
+                <div className="text-xs text-slate-500 mt-1">
+                  {formData.message.length}/1000 characters
+                </div>
               </div>
               
               <div>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-[#6A0DAD] to-[#228B22] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold sm:font-bold hover:from-[#228B22] hover:to-[#6A0DAD] transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-70 text-sm sm:text-base"
+                  className="w-full bg-gradient-to-r from-[#228B22] to-[#32CD32] text-white py-3 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold sm:font-bold hover:from-[#32CD32] hover:to-[#228B22] transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base shadow-lg hover:shadow-xl"
                 >
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
-                      <span>Sending...</span>
+                      <span>Sending Message...</span>
                     </>
                   ) : (
                     <>
@@ -148,8 +254,10 @@ export default function ContactUs() {
               </div>
               
               {submitStatus && (
-                <div className={`text-center p-3 rounded-lg sm:rounded-xl text-sm font-medium ${
-                  submitStatus.success ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                <div className={`text-center p-3 sm:p-4 rounded-lg sm:rounded-xl text-sm font-medium border ${
+                  submitStatus.success 
+                    ? 'bg-green-50 text-green-700 border-green-200' 
+                    : 'bg-red-50 text-red-700 border-red-200'
                 }`}>
                   {submitStatus.message}
                 </div>
