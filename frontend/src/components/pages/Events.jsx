@@ -91,7 +91,7 @@ const Events = () => {
     <section id="events" className="py-16 lg:py-20 relative overflow-hidden">
       {/* Enhanced Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50 opacity-75"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50 opacity-70"></div>
         <div className="absolute top-20 left-10 w-64 h-64 bg-[#c98d32] opacity-5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500 opacity-5 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-green-500 opacity-3 rounded-full blur-3xl animate-pulse delay-2000"></div>
@@ -102,7 +102,7 @@ const Events = () => {
         {/* Header */}
         <div className="text-center mb-12 lg:mb-16">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 bg-clip-text text-transparent">
+            <span className="text-[#c98d32]">
               Our Events
             </span>
           </h2>

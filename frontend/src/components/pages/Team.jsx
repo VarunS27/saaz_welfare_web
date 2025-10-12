@@ -113,7 +113,7 @@ const Team = () => {
 
           
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-[#c98d32] via-purple-600 to-green-600 bg-clip-text text-transparent">
+            <span className="text-[#c98d32]">
               The Changemakers
             </span>
             <br />
