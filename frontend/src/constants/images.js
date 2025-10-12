@@ -48,9 +48,29 @@ export const IMAGES = {
   events: {},
   
   // QR Code for donations
-  qrCode: null
-};
+  qrCode: 'qr_vc1phs',
 
+  // events
+
+  event1: {
+    event1: 'grp_zlhdei',
+    event2: 'gro1_myqyq2', 
+  },
+  event2: {
+    event1: 'event_n1_nsqq8s  ',
+    event2: 'event_n2_i2iano',
+    event3: 'event_n3_x9mgb9',
+
+  },
+
+  event3: {
+    event1: 'event_4_ev8qtd',
+    event2: 'event_5_uwv3bq',
+    event3: 'event_3_mabfwz',    
+    event4: 'event_6_pftauv',    
+}
+
+}
 // Fallback images for development
 export const FALLBACK_IMAGES = {
   logo: '/abt2.png',
@@ -59,7 +79,8 @@ export const FALLBACK_IMAGES = {
   grp: './components/pages/assets/grp.jpg',
   maaSaraswati: 'https://via.placeholder.com/300x400?text=Maa+Saraswati',
   teamMember: 'https://via.placeholder.com/300x400?text=Team+Member',
-  defaultImage: 'https://via.placeholder.com/600x400?text=Image+Coming+Soon'
+  defaultImage: 'https://via.placeholder.com/600x400?text=Image+Coming+Soon',
+  qrCode: '/qr.jpg'
 };
 
 // Direct URLs for immediate testing
@@ -86,4 +107,26 @@ export const DIRECT_URLS = {
   teamMember7: getDirectCloudinaryUrl('0b63d_rorpum', 'w_400,h_500,c_fill,q_auto,f_auto'),
   teamMember8: getDirectCloudinaryUrl('8017_jqvr8m', 'w_400,h_500,c_fill,q_auto,f_auto'),
 
+
+  qrCode: getDirectCloudinaryUrl('qr_vc1phs', 'w_500,h_500,c_fill,q_auto,f_auto'),
+
+
+  // events
+  event1: {
+    event1: 'grp_zlhdei',
+    event2: 'gro1_myqyq2', 
+  },
+  event2: {
+    event1: 'event_n1_nsqq8s  ',
+    event2: 'event_n2_i2iano',
+    event3: 'event_n3_x9mgb9',
+
+  },
+
+  event3: {
+    event1: 'event_4_ev8qtd',
+    event2: 'event_5_uwv3bq',
+    event3: 'event_3_mabfwz',    
+    event4: 'event_6_pftauv',    
+}
 };
