@@ -142,14 +142,15 @@ const Home = () => {
               {/* Content Section */}
               <div className="space-y-6 sm:space-y-8 lg:space-y-10 order-1 lg:order-2">
                 
-                {/* Simple Beautiful Title Card */}
-                <div className="backdrop-blur-sm bg-white/80 p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
+                {/* Fixed Title Card with Better Layout */}
+                <div className="backdrop-blur-sm bg-white/80 p-4 sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
                   
-                  <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
+                  {/* Mobile-first responsive layout */}
+                  <div className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
                     
                     {/* Title Section */}
-                    <div className="flex-1 text-center lg:text-left">
-                      <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight mb-4">
+                    <div className="w-full">
+                      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-slate-800 leading-tight mb-4">
                         Welcome to{' '}
                         <span className="text-green-700 block sm:inline">
                           Saaz Welfare
@@ -158,26 +159,27 @@ const Home = () => {
                           Foundation
                         </span>
                       </h1>
-                      
-
                     </div>
 
-                    {/* Simple Circular Maa Saraswati Image */}
-                    <div className="flex-shrink-0">
+                    {/* Maa Saraswati Image Section - Fixed for iPad Pro */}
+                    <div className="flex flex-col items-center">
                       <div className="relative group">
-                        <img
-                          src={maaSaraswatiSrc}
-                          alt="Maa Saraswati - Goddess of Knowledge"
-                          className="w-32 h-32 lg:w-40 lg:h-40 rounded-full shadow-lg group-hover:shadow-xl transition-shadow duration-300"
-                          onError={(e) => {
-                            console.log('Maa Saraswati image failed to load from Cloudinary, using fallback');
-                            e.target.src = FALLBACK_IMAGES.maaSaraswati;
-                          }}
-                        />
+                        {/* Constrained image container */}
+                        <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 overflow-hidden rounded-full shadow-lg group-hover:shadow-xl transition-shadow duration-300 bg-white border-2 border-orange-200">
+                          <img
+                            src={maaSaraswatiSrc}
+                            alt="Maa Saraswati - Goddess of Knowledge"
+                            className="w-full h-full object-cover object-center"
+                            onError={(e) => {
+                              console.log('Maa Saraswati image failed to load from Cloudinary, using fallback');
+                              e.target.src = FALLBACK_IMAGES.maaSaraswati;
+                            }}
+                          />
+                        </div>
                         
-                        {/* Simple blessing text */}
-                        <div className="text-center mt-3">
-                          <p className="text-sm text-orange-700 font-semibold">
+                        {/* Blessing text - constrained width */}
+                        <div className="mt-3 max-w-[200px] mx-auto">
+                          <p className="text-xs sm:text-sm text-orange-700 font-semibold whitespace-nowrap">
                             🙏 माँ सरस्वती की कृपा 🙏
                           </p>
                         </div>
@@ -188,7 +190,7 @@ const Home = () => {
                 
                 {/* Description Card */}
                 <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-white/30 shadow-lg">
-                  <p className="text-slate-700 text-base sm:text-lg lg:text-xl leading-relaxed font-medium">
+                  <p className="text-slate-700 text-base sm:text-lg lg:text-xl leading-relaxed font-medium text-center lg:text-left">
                     {companyIntro}
                   </p>
                 </div>
@@ -362,6 +364,14 @@ const Home = () => {
           
           .group:active {
             transform: scale(0.98);
+          }
+        }
+
+        /* iPad Pro specific fixes */
+        @media screen and (min-width: 1024px) and (max-width: 1366px) {
+          .lg\\:text-5xl {
+            font-size: 2.5rem;
+            line-height: 1.2;
           }
         }
       `}</style>
