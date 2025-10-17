@@ -223,7 +223,6 @@ export default function Navbar() {
 
           {/* Mobile Donate Button Section */}
           <div className="p-4 sm:p-6 border-t border-slate-200 bg-gradient-to-r from-green-50 to-blue-50">
-            
             <button
               onClick={handleDonateClick}
               className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold text-base py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center group transform hover:scale-105"
