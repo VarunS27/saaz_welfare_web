@@ -17,27 +17,41 @@ const Home = () => {
         resize: { width: 800, height: 500, crop: 'fill' } 
       }) || DIRECT_URLS.carouselFn,
       fallback: FALLBACK_IMAGES.fn,
-      alt: 'Community Togetherness',
-      title: 'Community functions',
-      description: 'Fostering a sense of belonging and support among community members'
     },
     {
       src: getCloudinaryUrl(IMAGES.about.fn2, { 
         resize: { width: 800, height: 500, crop: 'fill' } 
       }) || DIRECT_URLS.carouselFn2,
       fallback: FALLBACK_IMAGES.fn2,
-      alt: 'Educational Programs',
-      title: 'Education & Learning',
-      description: 'Empowering minds through quality education and skill development'
+    },
+    {
+      src: getCloudinaryUrl(IMAGES.about.fn3, { 
+        resize: { width: 800, height: 500, crop: 'fill' } 
+      }) || DIRECT_URLS.carouselFn3,
+      fallback: FALLBACK_IMAGES.fn3,
+    },
+    {
+      src: getCloudinaryUrl(IMAGES.about.fn4, { 
+        resize: { width: 800, height: 500, crop: 'fill' } 
+      }) || DIRECT_URLS.carouselFn4,
+      fallback: FALLBACK_IMAGES.fn4,
+    },
+    {
+      src: getCloudinaryUrl(IMAGES.about.fn5, { 
+        resize: { width: 800, height: 500, crop: 'fill' } 
+      }) || DIRECT_URLS.carouselFn5,
+      fallback: FALLBACK_IMAGES.fn5,
     }
+
+    
   ];
 
   const companyIntro = `SAAZ Welfare Foundation empowers underserved communities through mental health, music, and education. We use the healing power of music to inspire hope while mentoring students to succeed in global academics. Our mission blends compassion, culture, and knowledge for lasting impact.`;
 
   const stats = [
-    { icon: Users, number: 10000, suffix: "+", label: "Lives Impacted", duration: 2000 },
-    { icon: Heart, number: 500, suffix: "+", label: "Volunteers", duration: 1500 },
-    { icon: Award, number: 25, suffix: "+", label: "Programs", duration: 1000 },
+    { icon: Users, number: 1800, suffix: "+", label: "Lives Impacted", duration: 2000 },
+    { icon: Heart, number: 240, suffix: "+", label: "Volunteers", duration: 1500 },
+    { icon: Award, number: 22, suffix: "+", label: "Programs", duration: 1000 },
     { icon: Globe, number: 15, suffix: "+", label: "Communities", duration: 800 }
   ];
 
@@ -211,21 +225,13 @@ const Home = () => {
                     >
                       <img
                         src={image.src}
-                        alt={image.alt}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full"
                         onError={(e) => {
                           console.log(`Carousel image ${index} failed to load from Cloudinary, using fallback`);
                           e.target.src = image.fallback;
                         }}
                       />
                       
-                      {/* Caption */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 sm:p-6">
-                        <div className="text-white">
-                          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2">{image.title}</h3>
-                          <p className="text-sm sm:text-base text-white/90">{image.description}</p>
-                        </div>
-                      </div>
                     </div>
                   ))}
                   

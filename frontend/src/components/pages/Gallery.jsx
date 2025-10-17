@@ -85,7 +85,17 @@ const Gallery = () => {
       id: 10,
       src: IMAGES.gallery.image10,
       alt: 'Music therapy and healing programs'
-    }
+    },
+    {
+      id: 11,
+      src: IMAGES.gallery.image11,
+      alt: 'Community wellness programs'
+    },
+    {
+      id: 12,
+      src: IMAGES.gallery.image12,
+      alt: 'Skill development workshops'
+    },
   ];
 
   // Get optimized image URL
@@ -207,7 +217,7 @@ const Gallery = () => {
               {galleryImages.map((image, index) => (
                 <div
                   key={image.id}
-                  className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer h-64"
+                  className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer h-56"
                   style={{ 
                     animationDelay: `${index * 100}ms`,
                     transform: 'translateZ(0)', // Force hardware acceleration
@@ -225,7 +235,7 @@ const Gallery = () => {
                     <img
                       src={getGalleryImageUrl(image.src, 'medium')}
                       alt={image.alt}
-                      className="w-full h-full object-cover transition-transform duration-500"
+                      className="w-full h-full transition-transform duration-500"
                       style={{ willChange: 'transform' }}
                       onError={(e) => {
                         console.log(`Gallery image ${image.id} failed to load, using fallback`);

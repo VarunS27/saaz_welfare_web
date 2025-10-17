@@ -342,8 +342,8 @@ export default function ContactUs() {
                 <div className="flex-1 min-w-0">
                   <h4 className="text-base sm:text-lg font-bold text-slate-800 mb-1 sm:mb-2">Business Hours</h4>
                   <div className="space-y-1">
-                    <p className="text-sm sm:text-base text-slate-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
-                    <p className="text-sm sm:text-base text-slate-600">Saturday: 9:00 AM - 1:00 PM</p>
+                    <p className="text-sm sm:text-base text-slate-600">Monday - Friday: 10:00 AM - 5:00 PM</p>
+                    <p className="text-sm sm:text-base text-slate-600">Saturday: 10:00 AM - 2:00 PM</p>
                   </div>
                 </div>
               </div>

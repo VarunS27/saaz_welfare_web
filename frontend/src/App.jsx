@@ -9,6 +9,7 @@ import AboutUs from './components/pages/AboutUs';
 import Events from './components/pages/Events';
 import Gallery from './components/pages/Gallery';
 import Team from './components/pages/Team';
+import Donorswall from './components/pages/Donors';
 import ContactUs from './components/pages/ContactUs';
 import Footer from './components/pages/Footer';
 import NotFound from './components/NotFound';
@@ -97,6 +98,7 @@ function App() {
                 <Events />
                 <Gallery />
                 <Team />
+                <Donorswall />
                 <ContactUs />
                 <Footer />
               </div>

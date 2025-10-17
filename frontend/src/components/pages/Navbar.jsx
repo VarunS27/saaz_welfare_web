@@ -81,25 +81,41 @@ export default function Navbar() {
 
   // Get logo image with fallback
   const logoSrc = DIRECT_URLS.logo || FALLBACK_IMAGES.logo;
+  
+  // Get guru strip image
+  const guruStripSrc = DIRECT_URLS.guruStrip || getCloudinaryUrl(IMAGES.guruStrip.str, 'w_500,h_40,c_fit,q_auto,f_auto');
 
   return (
     <>
       <header
-        className={`w-full flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 lg:py-4 fixed top-0 left-0 z-50 transition-all duration-300 ${
+        className={`w-full flex items-center justify-between px-4 sm:px-6 lg:px-8 py-2 lg:py-2.5 fixed top-0 left-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "bg-white/95 backdrop-blur-lg shadow-lg border-b border-slate-200/50"
             : "bg-white/90 backdrop-blur-sm"
         }`}
       >
-        {/* Logo */}
+        {/* Logo Section */}
         <div className="flex-shrink-0 flex items-center">
           <img
             src={logoSrc}
             alt="Saaz Welfare Foundation Logo"
-            className="w-full h-20 object-cover"
+            className="h-12 sm:h-14 lg:h-16 w-auto object-contain"
             onError={(e) => {
               console.log('Logo failed to load, using fallback');
               e.target.src = FALLBACK_IMAGES.logo;
+            }}
+          />
+        </div>
+
+        {/* Guru Strip - Between Logo and Navigation (Desktop Only) */}
+        <div className="hidden lg:flex flex-shrink-0 mx-3">
+          <img
+            src={guruStripSrc}
+            alt="Guru Blessing"
+            className="h-8 xl:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+            onError={(e) => {
+              console.log('Guru strip failed to load');
+              e.target.style.display = 'none';
             }}
           />
         </div>
@@ -110,7 +126,7 @@ export default function Navbar() {
             <button
               key={link.name}
               onClick={() => scrollToSection(link.target)}
-              className={`relative font-medium text-sm xl:text-base px-4 xl:px-5 py-2 rounded-lg transition-all duration-300 cursor-pointer group ${
+              className={`relative font-medium text-sm xl:text-base px-3 xl:px-4 py-1.5 xl:py-2 rounded-lg transition-all duration-300 cursor-pointer group ${
                 activeSection === link.target
                   ? "text-[#6A0DAD] bg-[#6A0DAD]/10"
                   : "text-slate-700 hover:text-[#6A0DAD] hover:bg-[#6A0DAD]/5"
@@ -124,11 +140,24 @@ export default function Navbar() {
           ))}
         </nav>
 
+        {/* Guru Strip - Between Contact Us and Donate (Desktop Only) */}
+        <div className="hidden lg:flex flex-shrink-0 mx-3">
+          <img
+            src={guruStripSrc}
+            alt="Guru Blessing"
+            className="h-8 xl:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+            onError={(e) => {
+              console.log('Guru strip failed to load');
+              e.target.style.display = 'none';
+            }}
+          />
+        </div>
+
         {/* Desktop Donate Button */}
         <div className="hidden lg:flex flex-shrink-0 items-center">
           <button
             onClick={handleDonateClick}
-            className="bg-[#c98d32] hover:bg-orange-600 text-white font-semibold text-sm xl:text-base px-6 xl:px-8 py-2.5 xl:py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center group"
+            className="bg-[#c98d32] hover:bg-orange-600 text-white font-semibold text-sm xl:text-base px-4 xl:px-6 py-2 xl:py-2.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center group"
           >
             <Heart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
             Donate
@@ -167,10 +196,16 @@ export default function Navbar() {
           {/* Mobile Menu Header */}
           <div className="flex items-center justify-between p-6 border-b border-slate-200">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-[#c98d32] rounded-lg flex items-center justify-center shadow-md">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <div className="ml-3">
+              {/* Guru Strip in Mobile Header */}
+              <img
+                src={guruStripSrc}
+                alt="Guru Blessing"
+                className="h-6 w-auto object-contain mr-3 opacity-80"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <div>
                 <h2 className="text-lg font-bold text-[#c98d32]">Saaz Welfare</h2>
                 <p className="text-sm text-green-600 font-medium">Foundation</p>
               </div>
@@ -209,8 +244,20 @@ export default function Navbar() {
             </ul>
           </nav>
 
-          {/* Mobile Donate Button */}
+          {/* Mobile Donate Button with Guru Strip */}
           <div className="p-6 border-t border-slate-200">
+            {/* Guru Strip before donate button */}
+            <div className="flex justify-center mb-4">
+              <img
+                src={guruStripSrc}
+                alt="Guru Blessing"
+                className="h-8 w-auto object-contain opacity-80"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
+            
             <button
               onClick={handleDonateClick}
               className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold text-base py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center group"
@@ -225,8 +272,8 @@ export default function Navbar() {
                 Questions? Call us at
               </p>
               <p className="text-sm font-semibold text-[#c98d32]">
-                <a href="tel=7666884823">+91 76668 84823</a> <br />
-                <a href="tel=8779823714">+91 87798 23714</a>
+                <a href="tel:7666884823">+91 76668 84823</a> <br />
+                <a href="tel:8779823714">+91 87798 23714</a>
               </p>
             </div>
           </div>
