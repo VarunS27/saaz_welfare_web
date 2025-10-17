@@ -10,7 +10,7 @@ const navLinks = [
   { name: "Events", target: "events" },
   { name: "Gallery", target: "gallery" },
   { name: "Donors", target: "donors" },
-  { name: "Contact", target: "contact" },
+  { name: "Contact US", target: "contact" },
 ];
 
 export default function Navbar() {
@@ -82,9 +82,6 @@ export default function Navbar() {
 
   // Get logo image with fallback
   const logoSrc = DIRECT_URLS.logo || FALLBACK_IMAGES.logo;
-  
-  // Get guru strip image
-  const guruStripSrc = DIRECT_URLS.guruStrip || getCloudinaryUrl(IMAGES.guruStrip.str, 'w_500,h_40,c_fit,q_auto,f_auto');
 
   return (
     <>
@@ -108,19 +105,6 @@ export default function Navbar() {
           />
         </div>
 
-        {/* Guru Strip - Between Logo and Navigation (Desktop Only) */}
-        <div className="hidden lg:flex flex-shrink-0 mx-3">
-          <img
-            src={guruStripSrc}
-            alt="Guru Blessing"
-            className="h-8 xl:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-            onError={(e) => {
-              console.log('Guru strip failed to load');
-              e.target.style.display = 'none';
-            }}
-          />
-        </div>
-
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-1">
           {navLinks.map((link) => (
@@ -140,19 +124,6 @@ export default function Navbar() {
             </button>
           ))}
         </nav>
-
-        {/* Guru Strip - Between Contact Us and Donate (Desktop Only) */}
-        <div className="hidden lg:flex flex-shrink-0 mx-3">
-          <img
-            src={guruStripSrc}
-            alt="Guru Blessing"
-            className="h-8 xl:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-            onError={(e) => {
-              console.log('Guru strip failed to load');
-              e.target.style.display = 'none';
-            }}
-          />
-        </div>
 
         {/* Desktop Donate Button */}
         <div className="hidden lg:flex flex-shrink-0 items-center">
@@ -195,17 +166,11 @@ export default function Navbar() {
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-6 border-b border-slate-200">
-            <div className="flex items-center">
-              {/* Guru Strip in Mobile Header */}
-              <img
-                src={guruStripSrc}
-                alt="Guru Blessing"
-                className="h-6 w-auto object-contain mr-3 opacity-80"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                }}
-              />
+          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200 bg-gradient-to-r from-[#c98d32]/5 to-purple-100/30">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#c98d32] to-orange-500 rounded-full flex items-center justify-center">
+                <Heart className="w-5 h-5 text-white" />
+              </div>
               <div>
                 <h2 className="text-lg font-bold text-[#c98d32]">Saaz Welfare</h2>
                 <p className="text-sm text-green-600 font-medium">Foundation</p>
@@ -220,48 +185,48 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Navigation Links */}
-          <nav className="flex-1 px-6 py-8">
-            <ul className="space-y-2">
-              {navLinks.map((link, index) => (
-                <li key={link.name}>
-                  <button
-                    onClick={() => scrollToSection(link.target)}
-                    className={`w-full text-left px-4 py-4 rounded-xl font-medium text-base transition-all duration-300 flex items-center group ${
-                      activeSection === link.target
-                        ? "bg-[#c98d32] text-white shadow-lg"
-                        : "text-slate-700 hover:bg-slate-100 hover:text-[#c98d32]"
-                    }`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <span className={`w-2 h-2 rounded-full mr-3 transition-all duration-300 ${
-                      activeSection === link.target 
-                        ? "bg-white" 
-                        : "bg-slate-300 group-hover:bg-[#c98d32]"
-                    }`}></span>
-                    {link.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
+          <nav className="flex-1 px-4 sm:px-6 py-6 overflow-y-auto">
+            <div className="mb-4">
+              <h3 className="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-3 px-2">Navigation</h3>
+              <ul className="space-y-1">
+                {navLinks.map((link, index) => (
+                  <li key={link.name}>
+                    <button
+                      onClick={() => scrollToSection(link.target)}
+                      className={`w-full text-left px-4 py-3 rounded-xl font-medium text-base transition-all duration-300 flex items-center group ${
+                        activeSection === link.target
+                          ? "bg-gradient-to-r from-[#c98d32] to-orange-500 text-white shadow-lg transform scale-[1.02]"
+                          : "text-slate-700 hover:bg-gradient-to-r hover:from-slate-100 hover:to-purple-50 hover:text-[#c98d32]"
+                      }`}
+                      style={{ 
+                        animationDelay: `${index * 0.1}s`,
+                        animationFillMode: 'both'
+                      }}
+                    >
+                      <span className={`w-2 h-2 rounded-full mr-3 transition-all duration-300 ${
+                        activeSection === link.target 
+                          ? "bg-white shadow-lg" 
+                          : "bg-slate-300 group-hover:bg-[#c98d32] group-hover:shadow-md"
+                      }`}></span>
+                      {link.name}
+                      {activeSection === link.target && (
+                        <span className="ml-auto">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </nav>
 
-          {/* Mobile Donate Button with Guru Strip */}
-          <div className="p-6 border-t border-slate-200">
-            {/* Guru Strip before donate button */}
-            <div className="flex justify-center mb-4">
-              <img
-                src={guruStripSrc}
-                alt="Guru Blessing"
-                className="h-8 w-auto object-contain opacity-80"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                }}
-              />
-            </div>
+          {/* Mobile Donate Button Section */}
+          <div className="p-4 sm:p-6 border-t border-slate-200 bg-gradient-to-r from-green-50 to-blue-50">
             
             <button
               onClick={handleDonateClick}
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold text-base py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center group"
+              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold text-base py-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center group transform hover:scale-105"
             >
               <Heart className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
               Make a Donation
@@ -269,13 +234,17 @@ export default function Navbar() {
             
             {/* Contact Info */}
             <div className="mt-4 text-center">
-              <p className="text-sm text-slate-500">
+              <p className="text-xs text-slate-500 mb-1">
                 Questions? Call us at
               </p>
-              <p className="text-sm font-semibold text-[#c98d32]">
-                <a href="tel:7666884823">+91 76668 84823</a> <br />
-                <a href="tel:8779823714">+91 87798 23714</a>
-              </p>
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-[#c98d32]">
+                  <a href="tel:7666884823" className="hover:underline">+91 76668 84823</a>
+                </p>
+                <p className="text-sm font-semibold text-[#c98d32]">
+                  <a href="tel:8779823714" className="hover:underline">+91 87798 23714</a>
+                </p>
+              </div>
             </div>
           </div>
         </div>
