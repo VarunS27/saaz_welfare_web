@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 
@@ -13,10 +13,10 @@ import Donorswall from './components/pages/Donors';
 import ContactUs from './components/pages/ContactUs';
 import Footer from './components/pages/Footer';
 import NotFound from './components/NotFound';
+import SaazLoader from './components/Loader';
 
 // Auth Components
 import { AuthProvider } from './components/context/AuthContext';
-
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Dashboard from './components/Dashboard/Dashboard';
 
@@ -26,10 +26,26 @@ import { IMAGES, FALLBACK_IMAGES, DIRECT_URLS } from './constants/images';
 import { Heart } from 'lucide-react';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading time
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3500); // 3.5 seconds loading time
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Get background image from Cloudinary with fallback
   const backgroundImage = getCloudinaryUrl(IMAGES.about.grp, { 
     resize: { width: 1920, height: 1080, crop: 'fill' } 
   }) || DIRECT_URLS.backgroundGrp || FALLBACK_IMAGES.grp;
+
+  // Show loader while loading
+  if (isLoading) {
+    return <SaazLoader />;
+  }
 
   return (
     <AuthProvider>
@@ -37,7 +53,6 @@ function App() {
         <Routes>
           
           {/* Admin Routes */}
-       
           <Route 
             path="/admin/dashboard" 
             element={
