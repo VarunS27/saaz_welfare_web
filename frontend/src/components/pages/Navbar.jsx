@@ -9,7 +9,8 @@ const navLinks = [
   { name: "About", target: "about" },
   { name: "Events", target: "events" },
   { name: "Gallery", target: "gallery" },
-  { name: "Contact US", target: "contact" },
+  { name: "Donors", target: "donors" },
+  { name: "Contact", target: "contact" },
 ];
 
 export default function Navbar() {

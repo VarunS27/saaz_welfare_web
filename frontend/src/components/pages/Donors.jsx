@@ -62,7 +62,7 @@ const DonorsWall = () => {
   };
 
   return (
-    <section className="py-16 lg:py-24 relative overflow-hidden">
+    <section id="donors" className="py-16 lg:py-24 relative overflow-hidden">
       {/* Fixed Background - Same as Gallery */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-purple-50 opacity-70">
         <div className="absolute inset-0">
