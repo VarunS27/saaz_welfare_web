@@ -117,9 +117,12 @@ const DonorsWall = () => {
                 >
                   <ChevronLeft className="w-4 h-4 text-slate-600" />
                 </button>
-                <span className="px-3 py-1 bg-slate-100 rounded-lg text-sm font-medium text-slate-600">
-                  {currentSlide + 1} / {allSlides.length}
+                
+                {/* Make counter smaller and more subtle */}
+                <span className="px-2 py-1 text-xs font-medium text-slate-500 bg-slate-50 rounded-md min-w-[40px] text-center">
+                  {currentSlide + 1}/{allSlides.length}
                 </span>
+                
                 <button
                   onClick={nextSlide}
                   className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors"
